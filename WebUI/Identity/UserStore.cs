@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Entities;
+using BLL;
 using Domain.Repositories;
 using Microsoft.AspNet.Identity;
 
 namespace WebUI.Identity
 {
-    public class UserStore : IUserLoginStore<IdentityUser, Guid>, IUserClaimStore<IdentityUser, Guid>, IUserRoleStore<IdentityUser, Guid>, IUserPasswordStore<IdentityUser, Guid>, IUserSecurityStampStore<IdentityUser, Guid>, IUserStore<IdentityUser, Guid>, IDisposable
+    public class UserStore : 
+        IUserLoginStore<IdentityUser, Guid>,
+        IUserClaimStore<IdentityUser, Guid>,
+        IUserRoleStore<IdentityUser, Guid>, 
+        IUserPasswordStore<IdentityUser, Guid>, 
+        IUserSecurityStampStore<IdentityUser, Guid>, 
+        IUserStore<IdentityUser, Guid>, 
+        IDisposable
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,24 +24,23 @@ namespace WebUI.Identity
             _unitOfWork = unitOfWork;
         }
 
-        #region IUserStore<IdentityUser, Guid> Members
+      
         public Task CreateAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
 
-            var u = getUser(user);
+            var u = GetUser(user);
 
             _unitOfWork.UserRepository.Add(u);
+
             return _unitOfWork.SaveChangesAsync();
         }
 
         public Task DeleteAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
 
-            var u = getUser(user);
+            var u = GetUser(user);
 
             _unitOfWork.UserRepository.Remove(u);
             return _unitOfWork.SaveChangesAsync();
@@ -43,49 +49,44 @@ namespace WebUI.Identity
         public Task<IdentityUser> FindByIdAsync(Guid userId)
         {
             var user = _unitOfWork.UserRepository.FindById(userId);
-            return Task.FromResult<IdentityUser>(getIdentityUser(user));
+            return Task.FromResult<IdentityUser>(GetIdentityUser(user));
         }
 
         public Task<IdentityUser> FindByNameAsync(string userName)
         {
             var user = _unitOfWork.UserRepository.FindByUserName(userName);
-            return Task.FromResult<IdentityUser>(getIdentityUser(user));
+            return Task.FromResult<IdentityUser>(GetIdentityUser(user));
         }
 
         public Task UpdateAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentException("user");
+            Guard.ArgumentNotNull(user, "user should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
 
-            populateUser(u, user);
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
+
+            PopulateUser(u, user);
 
             _unitOfWork.UserRepository.Update(u);
+
             return _unitOfWork.SaveChangesAsync();
         }
-        #endregion
 
-        #region IDisposable Members
         public void Dispose()
         {
-            // Dispose does nothing since we want Unity to manage the lifecycle of our Unit of Work
+            
         }
-        #endregion
 
-        #region IUserClaimStore<IdentityUser, Guid> Members
         public Task AddClaimAsync(IdentityUser user, System.Security.Claims.Claim claim)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (claim == null)
-                throw new ArgumentNullException("claim");
+            Guard.ArgumentNotNull(user, "User should not be null");
+
+            Guard.ArgumentNotNull(claim, "Claim should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             var c = new Domain.Entities.Claim
             {
@@ -101,46 +102,38 @@ namespace WebUI.Identity
 
         public Task<IList<System.Security.Claims.Claim>> GetClaimsAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             return Task.FromResult<IList<System.Security.Claims.Claim>>(u.Claims.Select(x => new System.Security.Claims.Claim(x.ClaimType, x.ClaimValue)).ToList());
         }
 
         public Task RemoveClaimAsync(IdentityUser user, System.Security.Claims.Claim claim)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (claim == null)
-                throw new ArgumentNullException("claim");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotNull(claim, "Claim should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             var c = u.Claims.FirstOrDefault(x => x.ClaimType == claim.Type && x.ClaimValue == claim.Value);
             u.Claims.Remove(c);
 
             _unitOfWork.UserRepository.Update(u);
+
             return _unitOfWork.SaveChangesAsync();
         }
-        #endregion
 
-        #region IUserLoginStore<IdentityUser, Guid> Members
         public Task AddLoginAsync(IdentityUser user, UserLoginInfo login)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (login == null)
-                throw new ArgumentNullException("login");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotNull(login, "Login should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             var l = new Domain.Entities.ExternalLogin
             {
@@ -156,40 +149,34 @@ namespace WebUI.Identity
 
         public Task<IdentityUser> FindAsync(UserLoginInfo login)
         {
-            if (login == null)
-                throw new ArgumentNullException("login");
+            Guard.ArgumentNotNull(login, "Login should not be null");
 
             var identityUser = default(IdentityUser);
 
             var l = _unitOfWork.ExternalLoginRepository.GetByProviderAndKey(login.LoginProvider, login.ProviderKey);
             if (l != null)
-                identityUser = getIdentityUser(l.User);
+                identityUser = GetIdentityUser(l.User);
 
             return Task.FromResult<IdentityUser>(identityUser);
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             return Task.FromResult<IList<UserLoginInfo>>(u.Logins.Select(x => new UserLoginInfo(x.LoginProvider, x.ProviderKey)).ToList());
         }
 
         public Task RemoveLoginAsync(IdentityUser user, UserLoginInfo login)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (login == null)
-                throw new ArgumentNullException("login");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotNull(login, "Login should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             var l = u.Logins.FirstOrDefault(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey);
             u.Logins.Remove(l);
@@ -197,22 +184,17 @@ namespace WebUI.Identity
             _unitOfWork.UserRepository.Update(u);
             return _unitOfWork.SaveChangesAsync();
         }
-        #endregion
 
-        #region IUserRoleStore<IdentityUser, Guid> Members
         public Task AddToRoleAsync(IdentityUser user, string roleName)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (string.IsNullOrWhiteSpace(roleName))
-                throw new ArgumentException("Argument cannot be null, empty, or whitespace: roleName.");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "Role name should not be null or white space.");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
+
             var r = _unitOfWork.RoleRepository.FindByName(roleName);
-            if (r == null)
-                throw new ArgumentException("roleName does not correspond to a Role entity.", "roleName");
+            Guard.ArgumentNotNull(r, "RoleName does not correspond to a Role entity.");
 
             u.Roles.Add(r);
             _unitOfWork.UserRepository.Update(u);
@@ -222,40 +204,32 @@ namespace WebUI.Identity
 
         public Task<IList<string>> GetRolesAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             return Task.FromResult<IList<string>>(u.Roles.Select(x => x.Name).ToList());
         }
 
         public Task<bool> IsInRoleAsync(IdentityUser user, string roleName)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (string.IsNullOrWhiteSpace(roleName))
-                throw new ArgumentException("Argument cannot be null, empty, or whitespace: role.");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "Role name should not be null or white space.");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             return Task.FromResult<bool>(u.Roles.Any(x => x.Name == roleName));
         }
 
         public Task RemoveFromRoleAsync(IdentityUser user, string roleName)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            if (string.IsNullOrWhiteSpace(roleName))
-                throw new ArgumentException("Argument cannot be null, empty, or whitespace: role.");
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "Role name should not be null or white space.");
 
             var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
-                throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
 
             var r = u.Roles.FirstOrDefault(x => x.Name == roleName);
             u.Roles.Remove(r);
@@ -263,20 +237,16 @@ namespace WebUI.Identity
             _unitOfWork.UserRepository.Update(u);
             return _unitOfWork.SaveChangesAsync();
         }
-        #endregion
 
-        #region IUserPasswordStore<IdentityUser, Guid> Members
         public Task<string> GetPasswordHashAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
             return Task.FromResult<string>(user.PasswordHash);
         }
 
         public Task<bool> HasPasswordAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
             return Task.FromResult<bool>(!string.IsNullOrWhiteSpace(user.PasswordHash));
         }
 
@@ -285,13 +255,10 @@ namespace WebUI.Identity
             user.PasswordHash = passwordHash;
             return Task.FromResult(0);
         }
-        #endregion
 
-        #region IUserSecurityStampStore<IdentityUser, Guid> Members
         public Task<string> GetSecurityStampAsync(IdentityUser user)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            Guard.ArgumentNotNull(user, "User should not be null");
             return Task.FromResult<string>(user.SecurityStamp);
         }
 
@@ -300,21 +267,19 @@ namespace WebUI.Identity
             user.SecurityStamp = stamp;
             return Task.FromResult(0);
         }
-        #endregion
 
-        #region Private Methods
-        private Domain.Entities.User getUser(IdentityUser identityUser)
+        private Domain.Entities.User GetUser(IdentityUser identityUser)
         {
             if (identityUser == null)
                 return null;
 
             var user = new Domain.Entities.User();
-            populateUser(user, identityUser);
+            PopulateUser(user, identityUser);
 
             return user;
         }
 
-        private void populateUser(Domain.Entities.User user, IdentityUser identityUser)
+        private void PopulateUser(Domain.Entities.User user, IdentityUser identityUser)
         {
             user.UserId = identityUser.Id;
             user.UserName = identityUser.UserName;
@@ -322,24 +287,23 @@ namespace WebUI.Identity
             user.SecurityStamp = identityUser.SecurityStamp;
         }
 
-        private IdentityUser getIdentityUser(Domain.Entities.User user)
+        private IdentityUser GetIdentityUser(Domain.Entities.User user)
         {
             if (user == null)
                 return null;
 
             var identityUser = new IdentityUser();
-            populateIdentityUser(identityUser, user);
+            PopulateIdentityUser(identityUser, user);
 
             return identityUser;
         }
 
-        private void populateIdentityUser(IdentityUser identityUser, Domain.Entities.User user)
+        private void PopulateIdentityUser(IdentityUser identityUser, Domain.Entities.User user)
         {
             identityUser.Id = user.UserId;
             identityUser.UserName = user.UserName;
             identityUser.PasswordHash = user.PasswordHash;
             identityUser.SecurityStamp = user.SecurityStamp;
         }
-        #endregion
     }
 }

@@ -17,8 +17,6 @@ namespace DAL
         public UnitOfWork(string nameOrConnectionString)
         {
             _context = new ApplicationDbContext(nameOrConnectionString);
-
-            UserRepos = new Lazy<IUserRepository>(() => new UserRepository(_context));
         }
 
 
