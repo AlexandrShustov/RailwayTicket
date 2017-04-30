@@ -31,7 +31,9 @@ namespace WebUI.Controllers
         private async Task SignInAsync(IdentityUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
             var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
@@ -43,6 +45,7 @@ namespace WebUI.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindAsync(model.Email, model.Password);
+
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
@@ -74,12 +77,14 @@ namespace WebUI.Controllers
             {
                 var user = new IdentityUser { UserName = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
                 }
+
                 AddErrors(result);
             }
 
@@ -131,17 +136,21 @@ namespace WebUI.Controllers
             {
                 return View(model);
             }
+
             var user = await _userManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             var result = await _userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             AddErrors(result);
+
             return View();
         }
 
@@ -168,13 +177,13 @@ namespace WebUI.Controllers
         }
 
 
+        //TODO remove from controller
         private Guid getGuid(string value)
         {
             var result = default(Guid);
             Guid.TryParse(value, out result);
             return result;
         }
-
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
