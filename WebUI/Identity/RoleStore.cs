@@ -1,83 +1,72 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
+using BLL.Abstract;
 using Domain.Entities;
 using Domain.Repositories;
 using Microsoft.AspNet.Identity;
+using WebGrease.Css.Extensions;
 
 namespace WebUI.Identity
 {
     public class RoleStore : IRoleStore<IdentityRole, Guid>, IQueryableRoleStore<IdentityRole, Guid>, IDisposable
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private IRoleService _roleService;
 
-        public RoleStore(IUnitOfWork unitOfWork)
+        public RoleStore(IRoleService roleService)
         {
-            _unitOfWork = unitOfWork;
+            _roleService = roleService;
         }
 
-        #region IRoleStore<IdentityRole, Guid> Members
-        public Task CreateAsync(IdentityRole role)
+
+        public Task CreateAsync(IdentityRole identityRole)
         {
-            if (role == null)
-                throw new ArgumentNullException("role");
+            Guard.ArgumentNotNull(identityRole, nameof(identityRole) + "should be not null.");
 
-            var r = getRole(role);
+            var role = GetRole(identityRole);
 
-            _unitOfWork.RoleRepository.Add(r);
-            return _unitOfWork.SaveChangesAsync();
+            return _roleService.CreateAsync(role);
         }
 
-        public Task DeleteAsync(IdentityRole role)
+        public Task DeleteAsync(IdentityRole identityRole)
         {
-            if (role == null)
-                throw new ArgumentNullException("role");
+            Guard.ArgumentNotNull(identityRole);
 
-            var r = getRole(role);
+            var role = GetRole(identityRole);
 
-            _unitOfWork.RoleRepository.Remove(r);
-            return _unitOfWork.SaveChangesAsync();
+            return _roleService.DeleteAsync(role);
         }
 
-        public Task<IdentityRole> FindByIdAsync(Guid roleId)
+        public async Task<IdentityRole> FindByIdAsync(Guid roleId)
         {
-            var role = _unitOfWork.RoleRepository.FindById(roleId);
-            return Task.FromResult<IdentityRole>(getIdentityRole(role));
+            return GetIdentityRole(await _roleService.FindByIdAsync(roleId));
         }
 
-        public Task<IdentityRole> FindByNameAsync(string roleName)
+        public async Task<IdentityRole> FindByNameAsync(string roleName)
         {
-            var role = _unitOfWork.RoleRepository.FindByName(roleName);
-            return Task.FromResult<IdentityRole>(getIdentityRole(role));
+            return GetIdentityRole(await _roleService.FindByNameAsync(roleName));
         }
 
-        public Task UpdateAsync(IdentityRole role)
+        public Task UpdateAsync(IdentityRole identityRole)
         {
-            if (role == null)
-                throw new ArgumentNullException("role");
-            var r = getRole(role);
-            _unitOfWork.RoleRepository.Update(r);
-            return _unitOfWork.SaveChangesAsync();
-        }
-        #endregion
+            Guard.ArgumentNotNull(identityRole, nameof(identityRole) + "should not be null.");
 
-        #region IDisposable Members
+            var role = GetRole(identityRole);
+
+            return _roleService.UpdateAsync(role);
+        }
+
         public void Dispose()
         {
             // Dispose does nothing since we want Unity to manage the lifecycle of our Unit of Work
         }
-        #endregion
 
-        #region IQueryableRoleStore<IdentityRole, Guid> Members
-        public IQueryable<IdentityRole> Roles => _unitOfWork.RoleRepository
-            .GetAll()
-            .Select(getIdentityRole)
-            .AsQueryable();
+        public IQueryable<IdentityRole> Roles
+            => _roleService.GetRolesAsQueryable().Select(r => GetIdentityRole(r));
 
-        #endregion
 
-        #region Private Methods
-        private Role getRole(IdentityRole identityRole)
+        private Role GetRole(IdentityRole identityRole)
         {
             if (identityRole == null)
                 return null;
@@ -88,7 +77,7 @@ namespace WebUI.Identity
             };
         }
 
-        private IdentityRole getIdentityRole(Role role)
+        private IdentityRole GetIdentityRole(Role role)
         {
             if (role == null)
                 return null;
@@ -98,6 +87,5 @@ namespace WebUI.Identity
                 Name = role.Name
             };
         }
-        #endregion
     }
 }

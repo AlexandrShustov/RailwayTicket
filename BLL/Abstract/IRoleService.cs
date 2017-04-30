@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BLL.Abstract
 {
     public interface IRoleService
     {
-        Task AddToRoleAsync(IdentityUser user, string roleName);
+        Task CreateAsync(Role role);
 
-        Task<IList<string>> GetRolesAsync(IdentityUser user);
+        Task DeleteAsync(Role role);
 
-        Task<bool> IsInRoleAsync(IdentityUser user, string roleName);
+        Task<Role> FindByIdAsync(Guid roleId);
 
-        Task RemoveFromRoleAsync(IdentityUser user, string roleName);
+        Task<Role> FindByNameAsync(string roleName);
 
+        Task UpdateAsync(Role role);
 
+        IQueryable<Role> GetRolesAsQueryable();
     }
 }

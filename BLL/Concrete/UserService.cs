@@ -38,25 +38,21 @@ namespace BLL.Concrete
             return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<User> FindByIdAsync(Guid userId)
+        public async Task<User> FindByIdAsync(Guid userId)
         {
-            var user = _unitOfWork.UserRepository.FindById(userId);
-
-            return Task.FromResult(user);
+            return await _unitOfWork.UserRepository.FindByIdAsync(userId);
         }
 
-        public Task<User> FindByNameAsync(string userName)
+        public async Task<User> FindByNameAsync(string userName)
         {
-            var user = _unitOfWork.UserRepository.FindByUserName(userName);
-
-            return Task.FromResult(user);
+            return await _unitOfWork.UserRepository.FindByUserNameAsync(userName);
         }
 
         public Task UpdateAsync(User user)
         {
             _unitOfWork.UserRepository.Update(user);
 
-            return Task.FromResult(_unitOfWork.SaveChangesAsync());
+            return _unitOfWork.SaveChangesAsync();
         }
 
         public async Task AddClaimsAsync(Guid userId, Claim claim)
@@ -139,6 +135,51 @@ namespace BLL.Concrete
 
             _unitOfWork.UserRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task AddToRoleAsync(Guid userId, string roleName)
+        {
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "RoleName should not be null or white space.");
+
+            var user = await FindByIdAsync(userId);
+
+            user.Roles.Add(_unitOfWork.RoleRepository.FindByName(roleName));
+
+            await UpdateAsync(user);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task RemoveFromRoleAsync(Guid userId, string roleName)
+        {
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName);
+
+            var user = await FindByIdAsync(userId);
+
+            user.Roles.Remove(_unitOfWork.RoleRepository.FindByName(roleName));
+
+            await UpdateAsync(user);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IList<string>> GetRolesAsync(Guid userId)
+        {
+            var user = await FindByIdAsync(userId);
+            Guard.ArgumentNotNull(user, "User should not be null.");
+
+            var roles = user.Roles.Select(r => r.Name).ToList();
+
+            return roles;
+        }
+
+        public async Task<bool> IsInRoleAsync(Guid userId, string roleName)
+        {
+            var user = await FindByIdAsync(userId);
+            Guard.ArgumentNotNull(user, "User should not be null.");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName);
+
+            return user.Roles.Select(x => x.Name).Contains(roleName);
         }
     }
 }

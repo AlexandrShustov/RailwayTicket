@@ -20,6 +20,7 @@ namespace WebUI.Identity
         IDisposable
     {
         private  IUserService _userService;
+        private IRoleService _roleService;
 
         public UserStore()
         {
@@ -129,15 +130,8 @@ namespace WebUI.Identity
             Guard.ArgumentNotNull(user, "User should not be null");
             Guard.ArgumentNotNull(login, "Login should not be null");
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            Guard.ArgumentNotNull(u, "IdentityUser does not correspond to a User entity.");
-
-            var l = u.Logins.FirstOrDefault(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey);
-            u.Logins.Remove(l);
-
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
-        }
+            return _userService.RemoveLoginAsync(user.Id, login);
+         }
 
         public Task<string> GetPasswordHashAsync(IdentityUser user)
         {
@@ -205,6 +199,37 @@ namespace WebUI.Identity
             identityUser.UserName = user.UserName;
             identityUser.PasswordHash = user.PasswordHash;
             identityUser.SecurityStamp = user.SecurityStamp;
+        }
+
+        public async Task AddToRoleAsync(IdentityUser user, string roleName)
+        {
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "Role name should not be null.");
+
+            await _userService.AddToRoleAsync(user.Id, roleName);
+        }
+
+        public async Task RemoveFromRoleAsync(IdentityUser user, string roleName)
+        {
+            Guard.ArgumentNotNull(user, "User should not be null");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName, "Role name should not be null.");
+
+            await _userService.RemoveFromRoleAsync(user.Id, roleName);
+        }
+
+        public Task<IList<string>> GetRolesAsync(IdentityUser user)
+        {
+            Guard.ArgumentNotNull(user);
+
+            return _userService.GetRolesAsync(user.Id);
+        }
+
+        public Task<bool> IsInRoleAsync(IdentityUser user, string roleName)
+        {
+            Guard.ArgumentNotNull(user);
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName);
+
+            return _userService.IsInRoleAsync(user.Id, roleName);
         }
     }
 }

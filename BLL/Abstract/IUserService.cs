@@ -32,5 +32,13 @@ namespace BLL.Abstract
         Task<IList<UserLoginInfo>> GetLoginsAsync(Guid userId);
 
         Task RemoveLoginAsync(Guid userId, UserLoginInfo login);
+
+        Task AddToRoleAsync(Guid userId, string roleName);
+
+        Task RemoveFromRoleAsync(Guid userId, string roleName);
+
+        Task<IList<string>> GetRolesAsync(Guid userId);
+
+        Task<bool> IsInRoleAsync(Guid userId, string roleName);
     }
 }
