@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{CD4C99D9-6378-4362-807F-6364783F8C86}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI", "WebUI\WebUI.csproj", "{4A01871D-0E87-44B7-A56E-E01E6A15CD77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{49E81C3C-4384-414E-A521-3EA3F8D8EC88}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{00A97BF8-8EEE-4E94-A572-34B31174AE89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{BD8D5510-44E6-4C8E-900C-DB0BB70E6080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD4C99D9-6378-4362-807F-6364783F8C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD4C99D9-6378-4362-807F-6364783F8C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD4C99D9-6378-4362-807F-6364783F8C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD4C99D9-6378-4362-807F-6364783F8C86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A01871D-0E87-44B7-A56E-E01E6A15CD77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A01871D-0E87-44B7-A56E-E01E6A15CD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A01871D-0E87-44B7-A56E-E01E6A15CD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{00A97BF8-8EEE-4E94-A572-34B31174AE89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A97BF8-8EEE-4E94-A572-34B31174AE89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A97BF8-8EEE-4E94-A572-34B31174AE89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD8D5510-44E6-4C8E-900C-DB0BB70E6080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD8D5510-44E6-4C8E-900C-DB0BB70E6080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD8D5510-44E6-4C8E-900C-DB0BB70E6080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD8D5510-44E6-4C8E-900C-DB0BB70E6080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

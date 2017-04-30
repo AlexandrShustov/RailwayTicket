@@ -18,7 +18,7 @@ namespace BLL.Abstract
         Task<Role> FindByNameAsync(string roleName);
 
         Task UpdateAsync(Role role);
-
+        
         IQueryable<Role> GetRolesAsQueryable();
     }
 }

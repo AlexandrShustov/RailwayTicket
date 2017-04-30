@@ -285,6 +285,10 @@
       <Project>{6480A14F-6ED1-45B4-B143-37D2AEAE521F}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{bd8d5510-44e6-4c8e-900c-db0bb70e6080}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

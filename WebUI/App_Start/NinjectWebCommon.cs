@@ -1,4 +1,3 @@
-using DAL;
 using Domain.Repositories;
 using Microsoft.AspNet.Identity;
 using Ninject.Web.Mvc;

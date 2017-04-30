@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using DAL;
 using Domain.Entities;
 using Domain.Repositories;
+using Infrastructure;
 using Microsoft.AspNet.Identity;
 using Ninject;
 using WebUI.Identity;
@@ -28,9 +28,11 @@ namespace WebUI.App_Start
         }
         private void AddBindings()
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument("nameOrConnectionString", "RailwayTickets");
             kernel.Bind<IUserStore<IdentityUser, Guid>>().To<UserStore>();
-            kernel.Bind<Role>().ToSelf();
+            kernel.Bind<IRoleStore<IdentityRole, Guid>>().To<RoleStore>();
+
+            NinjectKernelBinder binder = new NinjectKernelBinder();
+            binder.AddBindings(kernel);
         }
     }
 }

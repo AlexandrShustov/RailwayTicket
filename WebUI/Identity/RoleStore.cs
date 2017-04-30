@@ -10,9 +10,9 @@ using WebGrease.Css.Extensions;
 
 namespace WebUI.Identity
 {
-    public class RoleStore : IRoleStore<IdentityRole, Guid>, IQueryableRoleStore<IdentityRole, Guid>, IDisposable
+    public class RoleStore : IRoleStore<IdentityRole, Guid>
     {
-        private IRoleService _roleService;
+        private readonly IRoleService _roleService;
 
         public RoleStore(IRoleService roleService)
         {
@@ -57,15 +57,6 @@ namespace WebUI.Identity
             return _roleService.UpdateAsync(role);
         }
 
-        public void Dispose()
-        {
-            // Dispose does nothing since we want Unity to manage the lifecycle of our Unit of Work
-        }
-
-        public IQueryable<IdentityRole> Roles
-            => _roleService.GetRolesAsQueryable().Select(r => GetIdentityRole(r));
-
-
         private Role GetRole(IdentityRole identityRole)
         {
             if (identityRole == null)
@@ -86,6 +77,10 @@ namespace WebUI.Identity
                 Id = role.RoleId,
                 Name = role.Name
             };
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
