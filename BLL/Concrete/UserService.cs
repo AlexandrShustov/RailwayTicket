@@ -61,8 +61,8 @@ namespace BLL.Concrete
 
             var user = await FindByIdAsync(userId);
 
-            //TODO use variable
-            user.Roles.Add(_unitOfWork.RoleRepository.FindByName(roleName));
+            var role = _unitOfWork.RoleRepository.FindByName(roleName);
+            user.Roles.Add(role);
 
             await UpdateAsync(user);
 

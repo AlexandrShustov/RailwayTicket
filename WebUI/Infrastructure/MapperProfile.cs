@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using WebUI.Identity;
+using WebUI.Models;
 
 namespace WebUI.Infrastructure
 {
@@ -12,6 +13,8 @@ namespace WebUI.Infrastructure
 
             CreateMap<Role, IdentityRole>();
             CreateMap<IdentityRole, Role>();
+
+            CreateMap<RegisterViewModel, User>();
         } 
     }
 }

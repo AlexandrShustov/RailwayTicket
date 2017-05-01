@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using BLL.Abstract;
+using Domain.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using WebUI.Identity;
@@ -86,6 +87,13 @@ namespace WebUI.Controllers
 
                 if (result.Succeeded)
                 {
+                    var entityUser = _mapper.Map<User>(model);
+                    entityUser.PasswordHash = user.PasswordHash;
+                    entityUser.SecurityStamp = entityUser.SecurityStamp;
+                    entityUser.UserId = user.Id;
+                    entityUser.UserName = user.UserName;
+                    await _userService.UpdateAsync(entityUser);
+
                     await SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
