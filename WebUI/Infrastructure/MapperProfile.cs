@@ -7,8 +7,8 @@ namespace WebUI.Infrastructure
     {
         public MapperProfile()
         {
-            CreateMap<IdentityUser, User>();
-            CreateMap<User, IdentityUser>();
+            CreateMap<IdentityUser, User>().ForMember(u => u.UserId, cfg => cfg.MapFrom(iu => iu.Id));
+            CreateMap<User, IdentityUser>().ForMember(iu => iu.Id, cfg => cfg.MapFrom(u => u.UserId));
 
             CreateMap<Role, IdentityRole>();
             CreateMap<IdentityRole, Role>();

@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+using BLL.Abstract;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using WebUI.Identity;
@@ -14,10 +16,14 @@ namespace WebUI.Controllers
     {
         private readonly UserManager<IdentityUser, Guid> _userManager;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+        private IMapper _mapper;
+        private IUserService _userService;
 
-        public AccountController(UserManager<IdentityUser, Guid> userManager)
+        public AccountController(UserManager<IdentityUser, Guid> userManager, IUserService userService, IMapper mapper)
         {
             _userManager = userManager;
+            _userService = userService;
+            _mapper = mapper;
         }
 
        
