@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL;
 using BLL.Abstract;
 using Domain.Entities;
@@ -13,6 +14,7 @@ namespace WebUI.Identity
     public class RoleStore : IRoleStore<IdentityRole, Guid>
     {
         private readonly IRoleService _roleService;
+        private IMapper _mapper;
 
         public RoleStore(IRoleService roleService)
         {
@@ -23,8 +25,7 @@ namespace WebUI.Identity
         {
             Guard.ArgumentNotNull(identityRole, nameof(identityRole) + "should be not null.");
 
-            //TODO use mapper
-            var role = GetRole(identityRole);
+            var role = _mapper.Map<Role>(identityRole);
 
             return _roleService.CreateAsync(role);
         }
@@ -33,56 +34,28 @@ namespace WebUI.Identity
         {
             Guard.ArgumentNotNull(identityRole);
 
-            //TODO use mapper
-            var role = GetRole(identityRole);
+            var role = _mapper.Map<Role>(identityRole);
 
             return _roleService.DeleteAsync(role);
         }
 
         public async Task<IdentityRole> FindByIdAsync(Guid roleId)
         {
-            //TODO use mapper
-            return GetIdentityRole(await _roleService.FindByIdAsync(roleId));
+            return _mapper.Map<IdentityRole>(await _roleService.FindByIdAsync(roleId));
         }
 
         public async Task<IdentityRole> FindByNameAsync(string roleName)
         {
-            //TODO use mapper
-            return GetIdentityRole(await _roleService.FindByNameAsync(roleName));
+            return _mapper.Map<IdentityRole>(await _roleService.FindByNameAsync(roleName));
         }
 
         public Task UpdateAsync(IdentityRole identityRole)
         {
             Guard.ArgumentNotNull(identityRole, nameof(identityRole) + "should not be null.");
 
-            //TODO use mapper
-            var role = GetRole(identityRole);
+            var role = _mapper.Map<Role>(identityRole);
 
             return _roleService.UpdateAsync(role);
-        }
-
-        //TODO use mapper
-        private Role GetRole(IdentityRole identityRole)
-        {
-            if (identityRole == null)
-                return null;
-            return new Role
-            {
-                RoleId = identityRole.Id,
-                Name = identityRole.Name
-            };
-        }
-
-        //TODO use mapper
-        private IdentityRole GetIdentityRole(Role role)
-        {
-            if (role == null)
-                return null;
-            return new IdentityRole
-            {
-                Id = role.RoleId,
-                Name = role.Name
-            };
         }
 
         public void Dispose()

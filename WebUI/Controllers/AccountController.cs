@@ -190,15 +190,6 @@ namespace WebUI.Controllers
             }
         }
 
-
-        //TODO remove from controller
-        private Guid getGuid(string value)
-        {
-            var result = default(Guid);
-            Guid.TryParse(value, out result);
-            return result;
-        }
-
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
