@@ -6,7 +6,6 @@ namespace Domain.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IExternalLoginRepository ExternalLoginRepository { get; }
         IRoleRepository RoleRepository { get; }
         IUserRepository UserRepository { get; }
 

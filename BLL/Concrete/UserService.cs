@@ -43,9 +43,9 @@ namespace BLL.Concrete
             return _unitOfWork.UserRepository.FindByIdAsync(userId);
         }
 
-        public Task<User> FindbyEmailAsync(string email)
+        public Task<User> FindByEmailAsync(string email)
         {
-            return _unitOfWork.UserRepository.FindByUserNameAsync(email);
+            return _unitOfWork.UserRepository.FindByEmailAsync(email);
         }
 
         public Task UpdateAsync(User user)
@@ -61,6 +61,7 @@ namespace BLL.Concrete
 
             var user = await FindByIdAsync(userId);
 
+            //TODO use variable
             user.Roles.Add(_unitOfWork.RoleRepository.FindByName(roleName));
 
             await UpdateAsync(user);
@@ -74,13 +75,15 @@ namespace BLL.Concrete
 
             var user = await FindByIdAsync(userId);
 
-            user.Roles.Remove(_unitOfWork.RoleRepository.FindByName(roleName));
+            var role = _unitOfWork.RoleRepository.FindByName(roleName);
+            
+            user.Roles.Remove(role);
 
             await UpdateAsync(user);
 
             await _unitOfWork.SaveChangesAsync();
         }
-
+        
         public async Task<IList<string>> GetRolesAsync(Guid userId)
         {
             var user = await FindByIdAsync(userId);

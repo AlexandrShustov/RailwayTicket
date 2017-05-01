@@ -15,7 +15,7 @@ namespace BLL.Abstract
 
         Task<User> FindByIdAsync(Guid userId);
 
-        Task<User> FindbyEmailAsync(string email);
+        Task<User> FindByEmailAsync(string email);
 
         Task UpdateAsync(User user);
 

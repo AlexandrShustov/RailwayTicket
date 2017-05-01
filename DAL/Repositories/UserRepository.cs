@@ -14,34 +14,19 @@ namespace DAL.Repositories
         {
         }
 
-        public User FindByUserName(string username)
-        {
-            return Set.FirstOrDefault(x => x.UserName == username);
-        }
-
-        public Task<User> FindByUserNameAsync(string username)
-        {
-            return Set.FirstOrDefaultAsync(x => x.UserName == username);
-        }
-
-        public Task<User> FindByUserNameAsync(System.Threading.CancellationToken cancellationToken, string username)
-        {
-            return Set.FirstOrDefaultAsync(x => x.UserName == username, cancellationToken);
-        }
-
         public User FindByEmail(string email)
         {
-            throw new System.NotImplementedException();
+            return Set.FirstOrDefault(x => x.Email == email);
         }
 
         public Task<User> FindByEmailAsync(string email)
         {
-            throw new System.NotImplementedException();
+            return Set.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public Task<User> FindByEmailAsync(CancellationToken cancellationToken, string email)
         {
-            throw new System.NotImplementedException();
+            return Set.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
         }
     }
 }

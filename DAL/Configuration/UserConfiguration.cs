@@ -41,14 +41,6 @@ namespace DAL
                     x.MapLeftKey("UserId");
                     x.MapRightKey("RoleId");
                 });
-
-            HasMany(x => x.Claims)
-                .WithRequired(x => x.User)
-                .HasForeignKey(x => x.UserId);
-
-            HasMany(x => x.Logins)
-                .WithRequired(x => x.User)
-                .HasForeignKey(x => x.UserId);
         }
     }
 }

@@ -8,21 +8,13 @@ namespace DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        private IExternalLoginRepository _externalLoginRepository;
+  
         private IRoleRepository _roleRepository;
         private IUserRepository _userRepository;
-        private Lazy<IUserRepository> UserRepos;
-
 
         public UnitOfWork(string nameOrConnectionString)
         {
             _context = new ApplicationDbContext(nameOrConnectionString);
-        }
-
-
-        public IExternalLoginRepository ExternalLoginRepository
-        {
-            get { return _externalLoginRepository ?? (_externalLoginRepository = new ExternalLoginRepository(_context)); }
         }
 
         public IRoleRepository RoleRepository
@@ -52,7 +44,6 @@ namespace DAL
 
         public void Dispose()
         {
-            _externalLoginRepository = null;
             _roleRepository = null;
             _userRepository = null;
             _context.Dispose();
