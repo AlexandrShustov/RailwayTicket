@@ -89,7 +89,7 @@ namespace WebUI.Controllers
                 {
                     var entityUser = _mapper.Map<User>(model);
                     entityUser.PasswordHash = user.PasswordHash;
-                    entityUser.SecurityStamp = entityUser.SecurityStamp;
+                    entityUser.SecurityStamp = user.SecurityStamp;
                     entityUser.UserId = user.Id;
                     entityUser.UserName = user.UserName;
                     await _userService.UpdateAsync(entityUser);
