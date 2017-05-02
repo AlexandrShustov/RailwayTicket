@@ -88,6 +88,7 @@ namespace WebUI.Controllers
                 if (result.Succeeded)
                 {
                     var entityUser = _mapper.Map<User>(model);
+
                     entityUser.PasswordHash = user.PasswordHash;
                     entityUser.SecurityStamp = user.SecurityStamp;
                     entityUser.UserId = user.Id;
