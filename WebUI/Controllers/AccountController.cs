@@ -86,7 +86,6 @@ namespace WebUI.Controllers
             {
                 var user = new IdentityUser { UserName = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                await _roleManager.CreateAsync(new IdentityRole {Name = "user"});
                 await _userManager.AddToRoleAsync(user.Id, "user");
 
                 if (result.Succeeded)
@@ -100,7 +99,7 @@ namespace WebUI.Controllers
 
                     await SignInAsync(user, isPersistent: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("HomePage", "Home");
                 }
 
                 AddErrors(result);
@@ -183,7 +182,7 @@ namespace WebUI.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("HomePage", "Home");
         }
 
         private void AddErrors(IdentityResult result)
@@ -194,14 +193,13 @@ namespace WebUI.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("HomePage", "Home");
         }
 
     }

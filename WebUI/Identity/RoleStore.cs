@@ -18,12 +18,13 @@ namespace WebUI.Identity
             _roleService = roleService;
             _mapper = mapper;
         }
-        
+
         public Task CreateAsync(IdentityRole identityRole)
         {
             Guard.ArgumentNotNull(identityRole, nameof(identityRole) + "should be not null.");
 
             var role = _mapper.Map<Role>(identityRole);
+            role.RoleId = identityRole.Id;
 
             return _roleService.CreateAsync(role);
         }

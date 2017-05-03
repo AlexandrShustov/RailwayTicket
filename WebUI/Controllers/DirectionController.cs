@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace WebUI.Controllers
 {
-    public class HomeController : Controller
+    public class DirectionController : Controller
     {
         [HttpGet]
-        public ActionResult HomePage()
+        public ActionResult DirectionList()
         {
             return View();
         }

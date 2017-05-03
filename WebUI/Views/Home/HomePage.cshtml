@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width" />
+    <title>HomePage</title>
+</head>
+<body>
+    <div class="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@Url.Action("DirectionList", "Direction")">Directions</a></li>
+                        <li><a href="#">Contacts</a></li>
+                        <li><a href="#">About</a></li>
+                        <li class="pull-right">@Html.Partial("_LoginPartial")</li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+<div class="greeting-image">
+    <div class="greeting-text-wrapper">
+        <div class="greeting-text">
+            HELLO, TRAVELER! <br>
+            <div class="sub-greeting-text">
+                LETS EXPLORE THE WORLD
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block-two-picture">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <article class="margined-content article">
+                    <h2 class="text-center">Welcome!</h2>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas commodo accumsan fermentum. Nunc blandit mauris ex, vitae blandit diam
+                    dictum eget. Mauris quis aliquam orci, non scelerisque diam. Curabitur mollis ex sed mi mattis, a eleifend tellus consequat. Aenean non dapibus
+                    massa. Duis porta maximus nibh, nec rhoncus magna ultrices eget. Nunc a tellus accumsan, ultricies ligula a, eleifend augue. Ut at ornare tellus
+                    . Vivamus pharetra sapien nec lobortis pulvinar. Nullam non lacus vitae risus porttitor vulputate non in dui. Integer ut purus lectus. Donec ut
+                    lectus consequat, venenatis orci non, maximus lorem. Phasellus quis dui vitae mi bibendum consequat. Ut vel lectus tortor. Mauris laoreet justo
+                    enim, non viverra metus pretium eu. Aenean non neque mi.
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
