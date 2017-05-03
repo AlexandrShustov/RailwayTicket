@@ -16,18 +16,20 @@ namespace WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser, Guid> _userManager;
+        private readonly RoleManager<IdentityRole, Guid> _roleManager;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
         private IMapper _mapper;
         private IUserService _userService;
 
-        public AccountController(UserManager<IdentityUser, Guid> userManager, IUserService userService, IMapper mapper)
+        public AccountController(UserManager<IdentityUser, Guid> userManager, IUserService userService, IMapper mapper, RoleManager<IdentityRole, Guid> roleManager)
         {
             _userManager = userManager;
             _userService = userService;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
-       
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -84,11 +86,12 @@ namespace WebUI.Controllers
             {
                 var user = new IdentityUser { UserName = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _roleManager.CreateAsync(new IdentityRole {Name = "user"});
+                await _userManager.AddToRoleAsync(user.Id, "user");
 
                 if (result.Succeeded)
                 {
                     var entityUser = _mapper.Map<User>(model);
-
                     entityUser.PasswordHash = user.PasswordHash;
                     entityUser.SecurityStamp = user.SecurityStamp;
                     entityUser.UserId = user.Id;
@@ -191,6 +194,7 @@ namespace WebUI.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

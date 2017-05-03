@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+//using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BLL.Abstract
 {

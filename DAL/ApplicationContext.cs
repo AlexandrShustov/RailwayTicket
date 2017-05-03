@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace DAL
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         internal ApplicationDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {

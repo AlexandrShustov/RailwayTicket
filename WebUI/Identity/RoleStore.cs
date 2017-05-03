@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL;
 using BLL.Abstract;
 using Domain.Entities;
-using Domain.Repositories;
 using Microsoft.AspNet.Identity;
-using WebGrease.Css.Extensions;
 
 namespace WebUI.Identity
 {
@@ -16,9 +13,10 @@ namespace WebUI.Identity
         private readonly IRoleService _roleService;
         private IMapper _mapper;
 
-        public RoleStore(IRoleService roleService)
+        public RoleStore(IRoleService roleService, IMapper mapper)
         {
             _roleService = roleService;
+            _mapper = mapper;
         }
         
         public Task CreateAsync(IdentityRole identityRole)
@@ -46,7 +44,12 @@ namespace WebUI.Identity
 
         public async Task<IdentityRole> FindByNameAsync(string roleName)
         {
-            return _mapper.Map<IdentityRole>(await _roleService.FindByNameAsync(roleName));
+            var role = await _roleService.FindByNameAsync(roleName);
+
+            if (role == null)
+                return null;
+
+            return Mapper.Map<IdentityRole>(role);
         }
 
         public Task UpdateAsync(IdentityRole identityRole)
