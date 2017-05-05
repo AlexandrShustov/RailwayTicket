@@ -73,7 +73,6 @@ namespace WebUI.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-             _roleManager.Create(new IdentityRole {Name = "tmp"});
             return View();
         }
 
@@ -87,7 +86,7 @@ namespace WebUI.Controllers
             {
                 var user = new IdentityUser { UserName = model.Email };
                 var result = _userManager.Create(user, model.Password);
-                await _userManager.AddToRoleAsync(user.Id, "user");
+                //await _userManager.AddToRoleAsync(user.Id, "user");
 
                 if (result.Succeeded)
                 {

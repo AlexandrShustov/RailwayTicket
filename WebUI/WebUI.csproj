@@ -212,7 +212,6 @@
     <Compile Include="Identity\IdentityUser.cs" />
     <Compile Include="Identity\RoleStore.cs" />
     <Compile Include="Identity\UserStore.cs" />
-    <Compile Include="Infrastructure\DatabaseInitializer.cs" />
     <Compile Include="Infrastructure\MapperProfile.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

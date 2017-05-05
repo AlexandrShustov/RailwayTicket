@@ -5,7 +5,7 @@ namespace DAL
 {
     public class ApplicationDbContext : DbContext
     {
-        internal ApplicationDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        public ApplicationDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
 
