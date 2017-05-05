@@ -17,6 +17,7 @@ namespace Infrastructure
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InTransientScope().WithConstructorArgument("nameOrConnectionString", "RailwayTickets");
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
+            kernel.Bind<IRouteService>().To<RouteService>();
         }
     }
 }

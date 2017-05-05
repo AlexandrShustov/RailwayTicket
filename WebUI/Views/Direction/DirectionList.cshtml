@@ -1,7 +1,45 @@
-﻿
+﻿@model IEnumerable<WebUI.Models.RouteViewModel>
 @{
     ViewBag.Title = "DirectionList";
 }
 
-<h2>DirectionList</h2>
-
+<div class="row">
+    <div class="col-md-offset-1 col-md-10 route-list">
+        <h2>All existing routes by today</h2>
+        <table class="table">
+            @if (ViewBag.IsModer)
+            {
+                <a class="manage-routes-link" href="@Url.Action("ManageRoutes", "Direction")">Manage Routes</a>
+            }
+            <thead>
+            <tr>
+                <th>Route</th>
+                <th>Departure/Arrival time</th>
+                <th>Free places</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var route in Model)
+            {
+                <td>
+                    <span>@route.FirstStationName-</span>
+                    <span>@route.LastStationName</span>
+                </td>
+                <td>
+                    <p>@route.DepartureTime</p>
+                    <p>@route.ArriveTime</p>
+                </td>
+                <td>
+                    <p>@route.FreePlacesCount</p>
+                </td>
+                <td>
+                    <a href="#">Buy</a>
+                </td>
+            }
+            <hr/>
+            </tbody>
+        </table>
+    </div>
+        <div class="col-md-1"></div>
+    </div>

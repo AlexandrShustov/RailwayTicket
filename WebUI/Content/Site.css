@@ -1,5 +1,13 @@
 ﻿body {
     margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background: url('Images/background-hallstatt.jpg') 50% 50% no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 body:first-child {
@@ -8,10 +16,9 @@ body:first-child {
 }
 
 /* Set padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
+.body-content {
+    margin-top: 5%;
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -34,6 +41,9 @@ textarea {
     height: 100vh;
     background: url('Images/train_back.jpg') 50% 50% no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .greeting-text-wrapper {
@@ -133,3 +143,78 @@ textarea {
     color: beige;
     border: 2px solid white;
 }
+
+.back-image {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background: url('Images/background-hallstatt.jpg') 50% 50% no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.route-list {
+    background-color: rgba(255,255,255, 0.4);
+    color: black;
+    padding: 5%;
+    font-family: segoe ui light;
+    font-size: 15pt;
+    border-bottom: dimgray solid 2px;
+}
+
+.table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 1px solid dimgray;
+}
+
+.login {
+    color: black;
+    padding: 15px;
+    font-family: segoe ui light;
+    font-size: 10pt;
+    background-color: rgba(255,255,255, 0.4);
+}
+
+.hr-white > hr {
+    border-top: black solid 1px;
+}
+
+.text-danger {
+    font-family: segoe ui;
+    font-size: 12pt;
+    font-weight: 500;
+    color: ;
+}
+
+.registration-form {
+    padding: 25px;
+    color: black;
+    font-family: segoe ui;
+    font-size: 10pt;
+    background-color: rgba(255,255,255, 0.4);
+}
+
+.footer {
+    color: white;
+    text-align: center;
+    font-family: segoe ui light;
+    font-size: 15pt;
+    background-color: rgba(1,1,1, 0.1);
+    padding: 15px;
+}
+
+a.manage-routes-link {
+    background-color: rgba(230, 20, 20, 0.62);
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+}
+
+    a.manage-routes-link:hover {
+        background-color: rgba(241, 91, 91, 0.82);
+        text-decoration: none;
+        color: black;
+    }
