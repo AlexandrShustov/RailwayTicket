@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlTypes;
 using DAL;
 using Domain.Entities;
 using Microsoft.AspNet.Identity;
@@ -63,6 +65,51 @@ namespace DAL
             context.Set<Role>().Add(adminRole);
             context.Set<Role>().Add(moderRole);
             context.Set<Role>().Add(userRole);
+
+
+
+            var places = new List<Place>();
+            var carriages = new List<Carriage>();
+            var trainsList = new List<Train>();
+            var stationsList = new List<Station>();
+            var routeStationsList = new List<RouteStation>();
+            var routesList = new List<Route>();
+
+            for (int i = 0; i < 36; i++)
+            {
+                var place = new Place { IsFree = true, Number = i+1 };
+                places.Add(place);
+            }
+       
+            var carriage = new Carriage{ Number = 1, Places = places };
+            carriages.Add(carriage);
+            
+            var train = new Train{ Carriage = carriages, Number = 444 };
+            trainsList.Add(train);
+            
+            var route = new Route();
+            route.Train = train;
+     
+            var stationOne = new Station {Name = "Kharkov"};
+            var stationTwo = new Station { Name = "Kiev" };
+            stationsList.Add(stationOne);
+            stationsList.Add(stationTwo);
+
+            var routeStationStart = new RouteStation{ ArriveTime = new DateTime(1800), DepartureTime = new DateTime(2017, 5, 15), Station = stationOne};
+            var routeStationEnd = new RouteStation { ArriveTime = new DateTime(2017, 5, 16), DepartureTime = new DateTime(1800), Station = stationTwo };
+            routeStationsList.Add(routeStationStart);
+            routeStationsList.Add(routeStationEnd);
+
+            route.Stations = routeStationsList;
+            routesList.Add(route);
+
+
+            context.Set<Place>().AddRange(places);
+            context.Set<Carriage>().AddRange(carriages);
+            context.Set<Train>().AddRange(trainsList);
+            context.Set<Route>().AddRange(routesList);
+            context.Set<RouteStation>().AddRange(routeStationsList);
+            context.Set<Station>().AddRange(stationsList);
 
             base.Seed(context);
         }

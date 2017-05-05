@@ -8,8 +8,8 @@ namespace Domain.Entities
 
         public virtual Station Station { get; set; }
 
-        public DateTime DepartureTime { get; set; }
+        public DateTime? DepartureTime { get; set; }
 
-        public DateTime ArriveTime { get; set; }
+        public DateTime? ArriveTime { get; set; }
     }
 }

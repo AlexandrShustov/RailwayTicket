@@ -7,5 +7,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         public virtual ICollection<Place> Places { get; set; }
+
+        public int Number { get; set; }
     }
 }
