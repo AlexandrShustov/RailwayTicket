@@ -1,48 +1,73 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using AutoMapper;
+using BLL.Abstract;
 using BLL.Concrete;
 using DAL;
+using Domain.Entities;
 using Microsoft.AspNet.Identity;
-using WebUI.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Ninject;
+using IdentityRole = WebUI.Identity.IdentityRole;
+using IdentityUser = WebUI.Identity.IdentityUser;
 
 namespace WebUI.Infrastructure
 {
     public class DatabaseInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
+        [Inject]
+        public IUserStore<IdentityUser, Guid> _userStore { get; set; }
+
         protected override async void Seed(ApplicationDbContext context)
         {
-            var mapper = new Mapper(new MapperConfiguration(Mapper => Mapper.AddProfile(new MapperProfile())));
+            var userManager = DependencyResolver.Current.GetService<UserManager<IdentityUser, Guid>>();
+            var userStor = DependencyResolver.Current.GetService<IUserService>();
+ 
+            var roleManager = DependencyResolver.Current.GetService<RoleManager<IdentityRole, Guid>>();
 
-            var unitOfWork = new UnitOfWork("RailwayTickets");
-            var userService = new UserService(unitOfWork);
-            var userManager = new UserManager<IdentityUser, Guid>(new UserStore(userService, mapper));
+            var adminRole = new IdentityRole("admin");
+            var moderRole = new IdentityRole("moder");
+            var userRole = new IdentityRole("user");
 
-            var roleService = new RoleService(unitOfWork);
-            var roleManager = new RoleManager<IdentityRole, Guid>(new RoleStore(roleService, mapper));
+            //await roleManager.CreateAsync(adminRole);
+            //await roleManager.CreateAsync(moderRole);
+            //await roleManager.CreateAsync(userRole);
 
-            var adminRole = new IdentityRole("admin", Guid.NewGuid());
-            var moderRole = new IdentityRole("moder", Guid.NewGuid());
-            var userRole = new IdentityRole("user", Guid.NewGuid());
-
-            await roleManager.CreateAsync(adminRole);
-            await roleManager.CreateAsync(moderRole);
-            await roleManager.CreateAsync(userRole);
+            roleManager.Create(adminRole);
+            roleManager.Create(moderRole);
+            roleManager.Create(userRole);
 
             var admin = new IdentityUser("admin@admin.com");
             var moder = new IdentityUser("moder@moder.com");
             var user = new IdentityUser("user@user.com");
 
-            userManager.Create(admin, "123456");
-            userManager.Create(moder, "123456");
-            userManager.Create(user, "123456");
+            await userManager.CreateAsync(admin, "123456");
+            await userManager.AddToRoleAsync(admin.Id, adminRole.Name);
 
-            userManager.AddToRole(admin.Id, "admin");
-            userManager.AddToRole(moder.Id, "moder");
-            userManager.AddToRole(user.Id, "user");
+            var entityUser = new User
+            {
+                Email = admin.UserName,
+                FirstName = "admin",
+                LastName = "admin",
+                IsStudent = false,
+                PhoneNumber = "+380957500085",
+                UserName = admin.UserName,
+                PasswordHash = admin.PasswordHash,
+                SecurityStamp = admin.SecurityStamp,
+                UserId = admin.Id
+            };
+            await userStor.UpdateAsync(entityUser);
+            //await userManager.CreateAsync(moder, "123456");
+            //await userManager.CreateAsync(user, "123456");
+
+            //await userManager.AddToRoleAsync(moder.Id, "moder");
+            //await userManager.AddToRoleAsync(user.Id, "user");
 
             base.Seed(context);
         }
+
+
     }
 }
