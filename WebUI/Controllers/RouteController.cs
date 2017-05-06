@@ -11,14 +11,16 @@ using WebUI.Models;
 
 namespace WebUI.Controllers
 {
-    public class DirectionController : Controller
+    public class RouteController : Controller
     {
         private IRouteService _routeService;
+        private IStationService _stationService;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
-        public DirectionController(IRouteService routeService)
+        public RouteController(IRouteService routeService, IStationService stationService)
         {
             _routeService = routeService;
+            _stationService = stationService;
         }
 
         [HttpGet]
@@ -30,11 +32,14 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "moder")]
         public async Task<ActionResult> ManageRoutes()
         {
             return View(await GetAllRoutes());
         }
 
+        [HttpGet]
+        [Authorize(Roles = "moder")]
         public async Task<ActionResult> DeleteRoute(int RouteId)
         {
             await _routeService.DeleteRoute(RouteId);
@@ -74,6 +79,46 @@ namespace WebUI.Controllers
             }
 
             return routeViewModels;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "moder")]
+        public ActionResult CreateRoute()
+        {
+            ViewBag.Index = 0;
+            return View(new List<RouteCreationViewModel>());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "moder")]
+        public async Task<ActionResult> RouteStationForm(int RequiredID)
+        {
+            ViewBag.Index = ++RequiredID;
+            ViewBag.RequiredId = "[" + RequiredID + "]";
+            return View(await GetRouteCreationViewModel());
+        }
+
+        private async Task<RouteCreationViewModel> GetRouteCreationViewModel()
+        {
+            var stations = await _stationService.GetAll();
+            var routeCreationVm = new RouteCreationViewModel();
+
+            routeCreationVm.AllStations = stations;
+            routeCreationVm.StationsSelectItems = new SelectList(routeCreationVm.AllStations, "Id", "Name");
+
+            return routeCreationVm;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "moder")]
+        public async Task<ActionResult> AddRoute(IEnumerable<RouteCreationViewModel> model)
+        {
+            return View(await GetRouteCreationViewModel());
+        }
+
+        public ActionResult CreateStation()
+        {
+            return View();
         }
     }
 }

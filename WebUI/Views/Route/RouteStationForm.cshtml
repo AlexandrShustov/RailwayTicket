@@ -1,0 +1,13 @@
+﻿@model WebUI.Models.RouteCreationViewModel
+
+@{
+    Layout = null;
+}
+
+@Html.DropDownListFor(m => m.SelectedStation.Id, Model.StationsSelectItems, new { Name = ViewBag.RequiredId + ".Model.SelectedStation.Id" })
+
+@Html.TextBoxFor(m => m.DepartureTime, new { type = "time", Class = "form-control datepicker", Name = ViewBag.RequiredId + ".Model.DepartureTime" })
+@Html.TextBoxFor(m => m.DepartureDate, new { type = "date", Class = "form-control datepicker", Name = ViewBag.RequiredId + ".Model.DepartureDate" })
+
+@Html.TextBoxFor(m => m.ArriveTime, new { type = "time", Class = "form-control datepicker", Name = ViewBag.RequiredId + ".Model.ArriveTime" })
+@Html.TextBoxFor(m => m.ArriveDate, new { type = "date", Class = "form-control datepicker", Name = ViewBag.RequiredId + ".Model.ArriveDate" })

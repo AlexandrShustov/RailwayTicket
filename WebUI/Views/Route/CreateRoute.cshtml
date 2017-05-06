@@ -1,0 +1,16 @@
+﻿
+@model List<WebUI.Models.RouteCreationViewModel>
+
+@{
+    ViewBag.Title = "CreateRoute";
+}
+
+@using (Html.BeginForm("AddRoute", "Direction", FormMethod.Post))
+{
+    <div id="route-creation-form">
+    </div>
+
+    <div>
+        <button type="submit">Send</button>
+    </div>
+}

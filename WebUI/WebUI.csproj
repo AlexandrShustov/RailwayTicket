@@ -203,8 +203,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\DirectionController.cs" />
+    <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -215,6 +216,7 @@
     <Compile Include="Infrastructure\MapperProfile.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RouteCreationViewModel.cs" />
     <Compile Include="Models\RouteViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -297,9 +299,14 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\HomePage.cshtml" />
-    <Content Include="Views\Direction\DirectionList.cshtml" />
-    <Content Include="Views\Direction\ManageRoutes.cshtml" />
-    <Content Include="Views\Direction\ManagedRoutesList.cshtml" />
+    <Content Include="Views\Route\DirectionList.cshtml" />
+    <Content Include="Views\Route\ManageRoutes.cshtml" />
+    <Content Include="Views\Route\ManagedRoutesList.cshtml" />
+    <Content Include="Views\Route\CreateRoute.cshtml" />
+    <Content Include="Views\Route\RouteStationForm.cshtml" />
+    <Content Include="Views\Station\ManageStations.cshtml" />
+    <Content Include="Views\Station\StationsList.cshtml" />
+    <Content Include="Views\Station\CreateNewStation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

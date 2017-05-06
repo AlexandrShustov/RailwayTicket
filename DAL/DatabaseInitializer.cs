@@ -92,6 +92,8 @@ namespace DAL
      
             var stationOne = new Station {Name = "Kharkov"};
             var stationTwo = new Station { Name = "Kiev" };
+            stationOne.IsDeleted = false;
+            stationOne.IsDeleted = false;
             stationsList.Add(stationOne);
             stationsList.Add(stationTwo);
 

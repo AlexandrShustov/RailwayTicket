@@ -1,0 +1,15 @@
+﻿@model Domain.Entities.Station
+
+@{
+    Layout = null;
+}
+<h2>Add a new station</h2>
+
+@using (Html.BeginForm("CreateStation", "Station", FormMethod.Post))
+{
+    <div>
+        @Html.TextBoxFor(m => m.Name)
+    </div>
+
+    <div><input type="submit" value="Submit" /></div>
+}

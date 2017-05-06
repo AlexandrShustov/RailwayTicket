@@ -15,6 +15,9 @@ namespace DAL
 
             Property(x => x.Name)
                 .IsRequired();
+
+            Property(x => x.IsDeleted)
+                .IsRequired();
         }
     }
 }

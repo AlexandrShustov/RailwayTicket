@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Domain.Entities.Station>
+
+@{
+    ViewBag.Title = "ManageStations";
+}
+
+<div class="route-list">
+    <h2>Manage stations</h2>
+    <div>
+        @Html.Partial("StationsList")
+    </div>
+
+    <div class="add-station">
+        @Ajax.ActionLink("Add new station", "CreateNewStation", "Station", new AjaxOptions {UpdateTargetId = "create-station-div-id", InsertionMode = InsertionMode.InsertAfter}, new {Class = "add-station-link"})
+    </div>
+
+    <div id="create-station-div-id">
+
+    </div>
+</div>

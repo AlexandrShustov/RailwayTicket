@@ -250,3 +250,31 @@ a.delete-route-link:hover {
     color: black;
     background-color: red;
 }
+
+p.station-list-p {
+    margin-top: 10px;
+    padding-right: 25px;
+}
+
+a.add-station-link {
+    text-decoration: none;
+    font-family: segoe ui light;
+    color: white;
+    font-size: 12pt;
+    background-color: darkslateblue;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+a.add-station-link:hover {
+    background-color: blueviolet;
+}
+
+.add-station {
+    margin-top: 5%;
+}
+
+.manage-stations-link {
+    
+}

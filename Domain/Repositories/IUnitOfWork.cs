@@ -9,6 +9,7 @@ namespace Domain.Repositories
         IRoleRepository RoleRepository { get; }
         IUserRepository UserRepository { get; }
         IRouteRepository RouteRepository { get; }
+        IStationRepository StationRepository { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

@@ -24,6 +24,7 @@ namespace BLL.Concrete
         public async Task DeleteRoute(int id)
         {
             var route = await _unitOfWork.RouteRepository.FindByIdAsync(id);
+            Guard.ArgumentNotNull(route, nameof(route) + "should not be null.");
             route.IsDeleted = true;
             _unitOfWork.RouteRepository.Update(route);
             await _unitOfWork.SaveChangesAsync();

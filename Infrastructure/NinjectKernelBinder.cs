@@ -18,6 +18,7 @@ namespace Infrastructure
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
             kernel.Bind<IRouteService>().To<RouteService>();
+            kernel.Bind<IStationService>().To<StationService>();
         }
     }
 }

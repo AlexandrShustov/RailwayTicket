@@ -12,6 +12,7 @@ namespace DAL
         private IRoleRepository _roleRepository;
         private IUserRepository _userRepository;
         private IRouteRepository _routeRepository;
+        private IStationRepository _stationRepository;
 
         public UnitOfWork(string nameOrConnectionString)
         {
@@ -31,6 +32,11 @@ namespace DAL
         public IRouteRepository RouteRepository
         {
             get { return _routeRepository ?? (_routeRepository = new RouteRepository(_context)); }
+        }
+
+        public IStationRepository StationRepository
+        {
+            get { return _stationRepository ?? (_stationRepository = new StationRepository(_context)); }
         }
 
         public int SaveChanges()

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Domain.Entities.Station>
+
+<div class="row" id="table-container" >
+    <div class="col-md-offset-1 col-md-10">
+        <div>
+            <table class="stations-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var station in Model)
+                    {
+                        <tr>
+                            <td>
+                                <p class="station-list-p">@station.Name</p>
+                            </td>
+                            <td>
+                                @Ajax.ActionLink("Delete", "DeleteStation", new { stationId = station.Id }, new AjaxOptions { UpdateTargetId = "table-container" }, new { Class = "delete-route-link" })
+                            </td>
+                        </tr>
+                    }
+                    <hr />
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
