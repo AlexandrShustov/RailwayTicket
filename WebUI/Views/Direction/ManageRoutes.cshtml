@@ -5,36 +5,10 @@
 
 <h2>ManageRoutes</h2>
 
-<table class="table" id="routes-table">
-    <thead>
-        <tr>
-            <th>Route</th>
-            <th>Departure/Arrival time</th>
-            <th>Free places</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var route in Model)
-        {
-            <td>
-                <span>@route.FirstStationName-</span>
-                <span>@route.LastStationName</span>
-            </td>
-            <td>
-                <p>@route.DepartureTime</p>
-                <p>@route.ArriveTime</p>
-            </td>
-            <td>
-                <p>@route.FreePlacesCount</p>
-            </td>
-            <td>
-                @Ajax.ActionLink("Delete", "DeleteRoute", new { RouteId = route.Id }, new AjaxOptions{UpdateTargetId = "routes-table" })
-            </td>
-        }
-        <hr />
-        </tbody>
-    </table>
-
+<div class="route-list">
+    @Html.Partial("ManagedRoutesList", Model)
+    
+    <a class="create-route-link" href="@Url.Action("CreateRoute", "Direction")">Add new route</a>
+</div>
 
 

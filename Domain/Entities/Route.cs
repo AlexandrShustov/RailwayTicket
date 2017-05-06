@@ -9,5 +9,7 @@ namespace Domain.Entities
         public virtual Train Train { get; set; }
 
         public virtual ICollection<RouteStation> Stations { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

@@ -13,6 +13,9 @@ namespace DAL
                 .Property(x => x.Id)
                 .IsRequired();
 
+            Property(x => x.IsDeleted)
+                .IsRequired();
+
             HasMany(x => x.Stations);
         }
     }

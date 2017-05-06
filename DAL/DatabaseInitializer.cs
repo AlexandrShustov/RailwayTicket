@@ -101,6 +101,7 @@ namespace DAL
             routeStationsList.Add(routeStationEnd);
 
             route.Stations = routeStationsList;
+            route.IsDeleted = false;
             routesList.Add(route);
 
 

@@ -24,7 +24,9 @@ namespace BLL.Concrete
         public async Task DeleteRoute(int id)
         {
             var route = await _unitOfWork.RouteRepository.FindByIdAsync(id);
-            _unitOfWork.RouteRepository.Remove(route);
+            route.IsDeleted = true;
+            _unitOfWork.RouteRepository.Update(route);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
