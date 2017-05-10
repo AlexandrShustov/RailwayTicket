@@ -1,0 +1,53 @@
+﻿
+@model WebUI.Models.RouteEditViewModel
+
+@{
+    ViewBag.Title = "Edit new route";
+}
+
+<div class="route-list">
+    @using (Html.BeginForm("AddRoute", "Route", FormMethod.Post))
+    {
+        for (int i = 0; i < Model.Stations.Count; i++)
+        {
+            @Html.HiddenFor(model => Model.Stations[i].Id)
+            @Html.HiddenFor(model => Model.Stations[i].ArriveTime)
+            @Html.HiddenFor(model => Model.Stations[i].DepartureTime)
+            @Html.HiddenFor(model => Model.Stations[i].Station.Id)
+            @Html.HiddenFor(model => Model.Stations[i].Station.Name)
+        }
+
+        @Html.HiddenFor(m => m.Id)
+        <p>@ViewBag.Errors</p>
+        @Html.ValidationSummary()
+        <p>Select train:</p>@Html.DropDownListFor(m => m.SelectedTrainId, Model.Trains, new {Class = "form-control"})
+
+        <div class="save-route-link">
+            <input type="submit" value="Save route" class="save-route-link"/>
+        </div>
+        <hr />
+    }
+   
+    <h3>Route stations: </h3>
+    <div class="route-station-form">
+        @foreach (var station in Model.Stations)
+        {
+            <div class="route-station-item">
+                <p>Name: @station.Station.Name</p>
+                <p>Arrive time: @station.ArriveTime</p>
+                <p>Departure time: @station.DepartureTime</p>
+
+                @Html.ActionLink("Remove station", "RemoveRouteStation", new { routeId = Model.Id, stationId = station.Id }, new { Class = "remove-route-station-link" })
+            </div>
+        }
+
+        <div id="route-creation-form" class="ajax-route-station-form">
+            @Ajax.ActionLink("Add station", "RouteStationForm", new { routeId = Model.Id }, new AjaxOptions { UpdateTargetId = "route-creation-form" }, new { Class = "add-route-station-link" })
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -21,6 +21,9 @@ namespace DAL
                 .HasColumnType("datetime2")
                 .IsOptional();
 
+            Property(x => x.IsDeleted)
+                .IsRequired();
+
             HasRequired(x => x.Station);
         }
     }

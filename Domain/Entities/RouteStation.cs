@@ -11,5 +11,7 @@ namespace Domain.Entities
         public DateTime? DepartureTime { get; set; }
 
         public DateTime? ArriveTime { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

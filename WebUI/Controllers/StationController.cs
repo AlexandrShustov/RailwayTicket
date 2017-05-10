@@ -4,18 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using BLL.Abstract;
 using Domain.Entities;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class StationController : Controller
     {
         private IStationService _stationService;
+        private IMapper _mapper;
 
-        public StationController(IStationService stationService)
+        public StationController(IStationService stationService, IMapper mapper)
         {
             _stationService = stationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,15 +30,21 @@ namespace WebUI.Controllers
 
         public ActionResult CreateNewStation(Station station)
         { 
-            return PartialView("CreateNewStation");
+            var stationViewModel = new StationViewModel();
+            return PartialView("CreateNewStation", stationViewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = "moder")]
         [ActionName("CreateStation")]
-        public ActionResult AddStation(Station station)
+        public async Task<ActionResult> AddStation(StationViewModel station)
         {
-            _stationService.CreateStation(station);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = "Field Name is required.";
+                return RedirectToAction("ManageStations");
+            }
+            await _stationService.CreateStation(_mapper.Map<Station>(station));
 
             return RedirectToAction("ManageStations");
         }

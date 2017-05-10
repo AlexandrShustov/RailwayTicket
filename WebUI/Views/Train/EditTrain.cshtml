@@ -1,0 +1,55 @@
+﻿@using Domain.Entities
+@model WebUI.Models.TrainViewModel
+
+@{
+    ViewBag.Title = "EditTrain";
+}
+
+<div class="row" id="table-container">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="route-list">
+            <h2>Edit train #@Model.Number</h2>
+
+            @using (Html.BeginForm("EditTrain", "Train", FormMethod.Post))
+            {
+                @Html.ValidationSummary("", new { @class = "text-danger"})
+                @Html.HiddenFor(m => m.Id)
+                <p>Train number:</p>
+                @Html.TextBoxFor(m => m.Number, new {Class = "form-control"})
+
+                <div class="update-train-button">
+                    <input class="update-train-button" type="submit" value="Add train to base" />
+                </div>
+                <hr/>
+            }
+            
+            <h3>Carriages:</h3>
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <p>@ViewBag.ErrorMessage</p>
+            }
+
+            @foreach (Carriage t in Model.Carriages)
+            {
+                <div class= "carriage-list-item">
+                    <p class=" ">Number of carriage: @t.Number</p>
+                    <p class=" ">Places: @t.Places.Count</p>
+                    <p class=" ">Type: @t.CarriageType</p>
+
+                    <div class="">
+                        <span>@Html.ActionLink("Delete carriage", "DeleteCarriage", "Train", new { carriageId = t.Id, editedTrainId = Model.Id }, new { Class = "edit-carriage-link" })</span>
+                    </div>
+                </div>
+            }
+            <hr />
+
+            <div id="carriage-form">
+                @Ajax.ActionLink("Add new carriage", "CarriageCreationForm", new { trainId = Model.Id }, new AjaxOptions { UpdateTargetId = "carriage-form" })
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

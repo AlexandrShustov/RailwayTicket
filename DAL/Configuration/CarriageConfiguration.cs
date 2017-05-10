@@ -7,13 +7,19 @@ namespace DAL
     {
         internal CarriageConfiguration()
         {
-            ToTable("Carriage");
+            ToTable("Carriages");
 
             HasKey(x => x.Id)
                 .Property(x => x.Id)
                 .IsRequired();
 
             Property(x => x.Number)
+                .IsRequired();
+
+            Property(x => x.CarriageType)
+                .IsRequired();
+
+            Property(x => x.IsDeleted)
                 .IsRequired();
 
             HasMany(x => x.Places);

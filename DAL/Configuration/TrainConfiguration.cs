@@ -16,7 +16,10 @@ namespace DAL
             Property(x => x.Number)
                 .IsRequired();
 
-            HasMany(x => x.Carriage);
+            Property(x => x.IsDeleted)
+                .IsRequired();
+
+            HasMany(x => x.Carriages);
         }
     }
 }

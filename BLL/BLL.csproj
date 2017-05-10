@@ -53,13 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ICarriageService.cs" />
     <Compile Include="Abstract\IRoleService.cs" />
     <Compile Include="Abstract\IRouteService.cs" />
+    <Compile Include="Abstract\IRouteStationService.cs" />
     <Compile Include="Abstract\IStationService.cs" />
+    <Compile Include="Abstract\ITrainService.cs" />
     <Compile Include="Abstract\IUserService.cs" />
+    <Compile Include="Concrete\CarriageService.cs" />
     <Compile Include="Concrete\RoleService.cs" />
     <Compile Include="Concrete\RouteService.cs" />
+    <Compile Include="Concrete\RouteStationService.cs" />
     <Compile Include="Concrete\StationService.cs" />
+    <Compile Include="Concrete\TrainService.cs" />
     <Compile Include="Concrete\UserService.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

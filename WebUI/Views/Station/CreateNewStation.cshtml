@@ -1,4 +1,4 @@
-﻿@model Domain.Entities.Station
+﻿@model WebUI.Models.StationViewModel
 
 @{
     Layout = null;
@@ -7,9 +7,14 @@
 
 @using (Html.BeginForm("CreateStation", "Station", FormMethod.Post))
 {
+    @Html.ValidationSummary()
     <div>
         @Html.TextBoxFor(m => m.Name)
     </div>
 
     <div><input type="submit" value="Submit" /></div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }

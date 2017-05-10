@@ -3,15 +3,17 @@
     ViewBag.Title = "Manage Routes";
 }
 
-<h2>ManageRoutes</h2>
-
-<div>
-    @Html.ActionLink("Add station to base", "ManageStations", "Station", new {Class = "manage-routes-link"})
-    @Html.ActionLink("Add train to base", "ManageTrains", "Train", new { Class = "manage-routes-link" })
-</div>
 <div class="route-list">
+    <div>
+        <h2>ManageRoutes</h2>
+        <hr/>
+        @Html.ActionLink("Manage stations", "ManageStations", "Station", null, new {Class = "manage-routes-link"})
+        @Html.ActionLink("Manage trains", "ManageTrains", "Train", null, new {Class = "manage-routes-link"})
+    </div>
+
+
     @Html.Partial("ManagedRoutesList", Model)
-    
+
     <a class="create-route-link" href="@Url.Action("CreateRoute", "Route")">Add new route</a>
 </div>
 

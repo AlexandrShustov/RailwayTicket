@@ -19,6 +19,9 @@ namespace Infrastructure
             kernel.Bind<IRoleService>().To<RoleService>();
             kernel.Bind<IRouteService>().To<RouteService>();
             kernel.Bind<IStationService>().To<StationService>();
+            kernel.Bind<ITrainService>().To<TrainService>();
+            kernel.Bind<ICarriageService>().To<CarriageService>();
+            kernel.Bind<IRouteStationService>().To<RouteStationService>();
         }
     }
 }

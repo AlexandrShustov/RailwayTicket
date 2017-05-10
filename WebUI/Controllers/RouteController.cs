@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using BLL.Abstract;
 using Domain.Entities;
 using Microsoft.Owin.Security;
@@ -15,12 +16,18 @@ namespace WebUI.Controllers
     {
         private IRouteService _routeService;
         private IStationService _stationService;
+        private ITrainService _trainService;
+        private IRouteStationService _routeStationService;
+        private IMapper _mapper;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
-        public RouteController(IRouteService routeService, IStationService stationService)
+        public RouteController(IRouteService routeService, IStationService stationService, IMapper mapper, ITrainService trainService, IRouteStationService routeStationService)
         {
             _routeService = routeService;
             _stationService = stationService;
+            _mapper = mapper;
+            _trainService = trainService;
+            _routeStationService = routeStationService;
         }
 
         [HttpGet]
@@ -73,7 +80,7 @@ namespace WebUI.Controllers
 
                 vm.FirstStationName = route.Stations.First().Station.Name;
                 vm.LastStationName = route.Stations.Last().Station.Name;
-                vm.FreePlacesCount = route.Train.Carriage.Sum(x => x.Places.Count(p => p.IsFree));
+                vm.FreePlacesCount = route.Train.Carriages.Sum(x => x.Places.Count(p => p.IsFree));
 
                 routeViewModels.Add(vm);
             }
@@ -85,40 +92,87 @@ namespace WebUI.Controllers
         [Authorize(Roles = "moder")]
         public ActionResult CreateRoute()
         {
-            ViewBag.Index = 0;
-            return View(new List<RouteCreationViewModel>());
+            var newRoute = _routeService.CreateRoute();
+
+            return RedirectToAction("EditRoute", new { routeId = newRoute.Id });
         }
 
         [HttpGet]
         [Authorize(Roles = "moder")]
-        public async Task<ActionResult> RouteStationForm(int RequiredID)
+        public async Task<ActionResult> EditRoute(int routeId)
         {
-            ViewBag.Index = ++RequiredID;
-            ViewBag.RequiredId = "[" + RequiredID + "]";
-            return View(await GetRouteCreationViewModel());
+            var route = await _routeService.GetById(routeId);
+
+            var viewModel = _mapper.Map<RouteEditViewModel>(route);
+            var trains = await _trainService.GetAll();
+
+            viewModel.Trains = new SelectList(trains.ToList(), "Id", "Number");
+
+            return View("EditRoute", viewModel);
         }
 
-        private async Task<RouteCreationViewModel> GetRouteCreationViewModel()
+        [HttpGet]
+        [Authorize(Roles = "moder")]
+        public async Task<ActionResult> RouteStationForm(int routeId)
+        {
+            return View(await GetRouteCreationViewModel(routeId));
+        }
+
+        private async Task<RouteStationCreateViewModel> GetRouteCreationViewModel(int routeId)
         {
             var stations = await _stationService.GetAll();
-            var routeCreationVm = new RouteCreationViewModel();
+            var routeStationCreateVm = new RouteStationCreateViewModel();
 
-            routeCreationVm.AllStations = stations;
-            routeCreationVm.StationsSelectItems = new SelectList(routeCreationVm.AllStations, "Id", "Name");
+            routeStationCreateVm.AllStations = stations;
+            routeStationCreateVm.StationsSelectItems = new SelectList(routeStationCreateVm.AllStations, "Id", "Name");
+            routeStationCreateVm.RouteId = routeId;
 
-            return routeCreationVm;
+            return routeStationCreateVm;
         }
 
         [HttpPost]
         [Authorize(Roles = "moder")]
-        public async Task<ActionResult> AddRoute(IEnumerable<RouteCreationViewModel> model)
+        public async Task<ActionResult> AddRoute(RouteEditViewModel model)
         {
-            return View(await GetRouteCreationViewModel());
+            if (model.Stations.Count <= 1)
+            {
+                return RedirectToAction("ManageRoutes");
+            }
+
+            var entityRoute = _mapper.Map<Route>(model);
+
+            await _routeService.AddTrainToRoute(model.SelectedTrainId, entityRoute.Id);
+            await _routeService.ActivateRoute(entityRoute.Id);
+            
+            return RedirectToAction("ManageRoutes");
         }
 
         public ActionResult CreateStation()
         {
             return View();
+        }
+
+        public async Task<ActionResult> AddRouteStation(RouteStationCreateViewModel vm)
+        {
+            vm.AllStations = await _stationService.GetAll();
+            var routeStation = _mapper.Map<RouteStation>(vm);
+
+            if (routeStation.DepartureTime >= routeStation.ArriveTime)
+            {
+                ViewBag.Errors = "Departure time must be less than arrive time.";
+                return RedirectToAction("EditRoute", new {routeId = vm.RouteId});
+            }
+
+            await _routeStationService.AddStationToRoute(vm.RouteId, routeStation);
+
+            return RedirectToAction("EditRoute", new { routeId = vm.RouteId });
+        }
+
+        public ActionResult RemoveRouteStation(int routeId, int stationId)
+        {
+            _routeService.RemoveStationFromRoute(routeId, stationId);
+
+            return RedirectToAction("EditRoute", new { routeId = routeId});
         }
     }
 }

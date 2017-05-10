@@ -8,6 +8,8 @@ namespace Domain.Entities
 
         public int Number { get; set; }
 
-        public virtual ICollection<Carriage> Carriage { get; set; }
+        public virtual ICollection<Carriage> Carriages { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

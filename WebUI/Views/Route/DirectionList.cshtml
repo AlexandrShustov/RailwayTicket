@@ -6,13 +6,13 @@
 <div class="row">
     <div class="col-md-offset-1 col-md-10 route-list">
         <h2>All existing routes by today</h2>
-        <table class="table">
+        <table class="route-list-table">
             @if (ViewBag.IsModer)
             {
                 <a class="manage-routes-link" href="@Url.Action("ManageRoutes", "Route")">Manage Routes</a>
             }
             <thead>
-            <tr>
+            <tr class="route-list-row">
                 <th>Route</th>
                 <th>Departure/Arrival time</th>
                 <th>Free places</th>
@@ -22,22 +22,23 @@
             <tbody>
             @foreach (var route in Model)
             {
-                <td>
-                    <span>@route.FirstStationName-</span>
-                    <span>@route.LastStationName</span>
-                </td>
-                <td>
-                    <p>@route.DepartureTime</p>
-                    <p>@route.ArriveTime</p>
-                </td>
-                <td>
-                    <p>@route.FreePlacesCount</p>
-                </td>
-                <td>
-                    <a href="#">Buy</a>
-                </td>
+                <tr class="route-list-row">
+                    <td>
+                        <span>@route.FirstStationName-</span>
+                        <span>@route.LastStationName</span>
+                    </td>
+                    <td>
+                        <p>@route.DepartureTime</p>
+                        <p>@route.ArriveTime</p>
+                    </td>
+                    <td>
+                        <p>@route.FreePlacesCount</p>
+                    </td>
+                    <td>
+                        <a href="#">Buy</a>
+                    </td>
+                </tr>
             }
-            <hr/>
             </tbody>
         </table>
     </div>

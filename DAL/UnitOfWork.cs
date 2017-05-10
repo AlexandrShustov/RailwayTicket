@@ -13,31 +13,31 @@ namespace DAL
         private IUserRepository _userRepository;
         private IRouteRepository _routeRepository;
         private IStationRepository _stationRepository;
+        private ITrainRepository _trainRepository;
+        private ICarriageRepository _carriageRepository;
+        private IPlaceRepository _placeRepository;
+        private IRouteStationRepository _routeStationRepository;
 
         public UnitOfWork(string nameOrConnectionString)
         {
             _context = new ApplicationDbContext(nameOrConnectionString);
         }
 
-        public IRoleRepository RoleRepository
-        {
-            get { return _roleRepository ?? (_roleRepository = new RoleRepository(_context)); }
-        }
+        public IRoleRepository RoleRepository => _roleRepository ?? (_roleRepository = new RoleRepository(_context));
 
-        public IUserRepository UserRepository
-        {
-            get { return _userRepository ?? (_userRepository = new UserRepository(_context)); }
-        }
+        public IUserRepository UserRepository => _userRepository ?? (_userRepository = new UserRepository(_context));
 
-        public IRouteRepository RouteRepository
-        {
-            get { return _routeRepository ?? (_routeRepository = new RouteRepository(_context)); }
-        }
+        public IRouteRepository RouteRepository => _routeRepository ?? (_routeRepository = new RouteRepository(_context));
 
-        public IStationRepository StationRepository
-        {
-            get { return _stationRepository ?? (_stationRepository = new StationRepository(_context)); }
-        }
+        public IStationRepository StationRepository => _stationRepository ?? (_stationRepository = new StationRepository(_context));
+
+        public ITrainRepository TrainRepository => _trainRepository ?? (_trainRepository = new TrainRepository(_context));
+
+        public ICarriageRepository CarriageRepository => _carriageRepository ?? (_carriageRepository = new CarriageRepository(_context));
+
+        public IPlaceRepository PlaceRepository => _placeRepository ?? (_placeRepository = new PlaceRepository(_context));
+
+        public IRouteStationRepository RouteStationRepository => _routeStationRepository ?? (_routeStationRepository = new RouteStationRepository(_context));
 
         public int SaveChanges()
         {
@@ -54,6 +54,7 @@ namespace DAL
             return _context.SaveChangesAsync(cancellationToken);
         }
 
+
         public void Dispose()
         {
             _roleRepository = null;
@@ -61,5 +62,7 @@ namespace DAL
             _routeRepository = null;
             _context.Dispose();
         }
+
+    
     }
 }

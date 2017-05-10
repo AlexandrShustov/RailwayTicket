@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Domain.Entities.Train>
+
+<div class="row" id="table-container">
+    <div class="col-md-offset-1 col-md-10">
+        <div>
+            <table class="train-table text-center">
+                <thead>
+                <tr class="train-table-row">
+                    <th class="train-list-table-col">Train number</th>
+                    <th class="train-list-table-col">Nuber of carriagess</th>
+                    <th class="train-list-table-col"></th>
+                    <th class="train-list-table-col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var train in Model)
+                {
+                    <tr class="train-table-row">
+                        <td class="train-list-table-col">
+                            <p class="train-list-cell text-center">@train.Number</p>
+                        </td>
+                        <td class="train-list-table-col">
+                            <p class="train-list-cell text-center">@train.Carriages.Count</p>
+                        </td>
+                        <td class="train-list-table-col">
+                            @Ajax.ActionLink("Delete", "DeleteTrain", new {trainId = train.Id}, new AjaxOptions {UpdateTargetId = "table-container"}, new {Class = "delete-route-link"})
+                        </td>
+                        <td class="train-list-table-col">
+                            @Html.ActionLink("Edit", "EditTrain", new {trainId = train.Id}, new {Class = "edit-train-link"})
+                        </td>
+                    </tr>
+                }
+                <hr/>
+                </tbody>
+            </table>
+            <div>
+                @Html.ActionLink("Add new train", "CreateTrain")
+            </div>
+        </div>
+    </div>
+</div>

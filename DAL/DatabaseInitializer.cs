@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.SqlTypes;
 using DAL;
 using Domain.Entities;
+using Domain.Enumerations;
 using Microsoft.AspNet.Identity;
 
 namespace DAL
@@ -82,9 +83,11 @@ namespace DAL
             }
        
             var carriage = new Carriage{ Number = 1, Places = places };
+            carriage.CarriageType = CarriageType.Compartments;
+            carriage.IsDeleted = false;
             carriages.Add(carriage);
             
-            var train = new Train{ Carriage = carriages, Number = 444 };
+            var train = new Train{ Carriages = carriages, Number = 444 };
             trainsList.Add(train);
             
             var route = new Route();

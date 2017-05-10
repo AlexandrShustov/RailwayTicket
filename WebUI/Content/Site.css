@@ -10,10 +10,10 @@
     background-repeat: no-repeat;
 }
 
-body:first-child {
-    margin: 0;
-    padding-top: 100px;
-}
+    body:first-child {
+        margin: 0;
+        padding-top: 100px;
+    }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -70,7 +70,6 @@ textarea {
 }
 
 .navigation .navbar-default {
-    background-color: transparent;
     color: white;
     border: none;
     width: 100%;
@@ -108,6 +107,7 @@ textarea {
 .navigation .navbar-nav {
     width: 100%;
 }
+
     .navigation .navbar-nav > li {
         float: none;
         display: inline-block;
@@ -186,7 +186,7 @@ textarea {
     font-family: segoe ui;
     font-size: 12pt;
     font-weight: 500;
-    color: ;
+    color: red;
 }
 
 .registration-form {
@@ -213,11 +213,11 @@ a.manage-routes-link {
     padding: 5px;
 }
 
-a.manage-routes-link:hover {
-    background-color: rgba(241, 91, 91, 0.82);
-    text-decoration: none;
-    color: black;
-}
+    a.manage-routes-link:hover {
+        background-color: rgba(241, 91, 91, 0.82);
+        text-decoration: none;
+        color: black;
+    }
 
 a.create-route-link {
     text-decoration: none;
@@ -228,11 +228,11 @@ a.create-route-link {
     padding: 10px;
 }
 
-a.create-route-link:hover {
-    text-decoration: none;
-    color: black;
-    background-color: cadetblue;
-}
+    a.create-route-link:hover {
+        text-decoration: none;
+        color: black;
+        background-color: cadetblue;
+    }
 
 a.delete-route-link {
     text-decoration: none;
@@ -245,11 +245,11 @@ a.delete-route-link {
     padding-right: 15px;
 }
 
-a.delete-route-link:hover {
-    text-decoration: none;
-    color: black;
-    background-color: red;
-}
+    a.delete-route-link:hover {
+        text-decoration: none;
+        color: black;
+        background-color: red;
+    }
 
 p.station-list-p {
     margin-top: 10px;
@@ -267,14 +267,171 @@ a.add-station-link {
     padding-right: 15px;
 }
 
-a.add-station-link:hover {
-    background-color: blueviolet;
-}
+    a.add-station-link:hover {
+        background-color: blueviolet;
+    }
 
 .add-station {
     margin-top: 5%;
 }
 
-.manage-stations-link {
-    
+.train-list-cell {
+    padding: 10px;
+    vertical-align: center;
+}
+
+.th-trains {
+    margin-right: 5%;
+}
+
+a.edit-carriage-link {
+    text-decoration: none;
+    font-family: segoe ui light;
+    font-size: 13pt;
+    padding: 5px;
+    color: white;
+    background-color: crimson;
+}
+
+a.edit-carriage-link:hover {
+    text-decoration: none;
+    font-family: segoe ui light;
+    font-size: 13pt;
+    padding: 5px;
+    color: white;
+    background-color: indianred;
+}
+
+.edit-carriage-cell {
+    width: 950px;
+}
+
+.carriage-create {
+    padding: 5px;
+    border: 1px solid black;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+table.train-table {
+    table-layout: fixed;
+    width: 200px;
+}
+
+th.train-list-table-col, td.train-list-table-col {
+    text-align: center;
+    width: 100px;
+}
+
+a.edit-train-link {
+    text-decoration: none;
+    font-family: segoe ui light;
+    color: white;
+    font-size: 12pt;
+    background-color: darkslategray;
+    padding: 10px 25px 10px 25px;
+}
+
+    a.edit-train-link:hover {
+        background-color: gray;
+        color: black;
+    }
+
+.update-train-button {
+    margin-top: 1%;
+}
+
+input.update-train-button {
+    background-color: rgba(224, 249, 255, 0.79);
+    border: none;
+    padding: 5px 20px 5px 20px;
+}
+
+input.update-train-button:hover {
+    background-color: rgba(224, 229, 255, 0.89);
+    border: none;
+    padding: 5px 20px 5px 20px;
+}
+
+table.train-table {
+    width: 90%;
+}
+
+tr.train-table-row {
+    border-bottom: 1px solid black;
+    padding: 15px;
+}
+
+table.route-list-table {
+    width: 100%;
+    margin-top: 5%;
+}
+
+.save-route-link {
+    margin-top: 1%;
+    width: 280px;
+}
+
+input.save-route-link {
+    width: 280px;
+    background-color: rgba(224, 249, 255, 0.79);
+    border: 1px solid gray;
+}
+
+    input.save-route-link:hover {
+        background-color: rgba(255, 255, 255, 0.84);
+    }
+
+.route-station-form {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+a.remove-route-station-link {
+    text-decoration: none;
+    color: rgba(10, 10, 10, 0.94);
+    background-color: rgba(255, 15, 63, 0.64);
+    padding: 2px 7px 2px 7px;
+}
+
+    a.remove-route-station-link:hover {
+        text-decoration: none;
+        color: whitesmoke;
+        background-color: rgba(189, 0, 53, 1);
+    }
+
+a.add-route-station-link {
+    text-decoration: none;
+    color: rgba(10, 10, 10, 0.94);
+    background-color: rgba(204, 250, 255, 0.62);
+    padding: 7px 12px 7px 12px;
+}
+
+    a.add-route-station-link:hover {
+        text-decoration: none;
+        background-color: rgba(153, 245, 255, 0.62);
+    }
+
+.route-station-item {
+    padding: 10px;
+    border-bottom: 1px solid black;
+    margin-top: 1%;
+}
+
+.route-station-item:last-child {
+    margin-bottom: 11%;
+}
+
+.ajax-route-station-form {
+    margin-top: 1%;
+}
+
+.route-list-row {
+    border-bottom: 1px solid gray;
+}
+
+.carriage-list-item {
+    padding: 10px;
+    border-bottom: 1px solid gray;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 1%;
 }

@@ -10,6 +10,10 @@ namespace Domain.Repositories
         IUserRepository UserRepository { get; }
         IRouteRepository RouteRepository { get; }
         IStationRepository StationRepository { get; }
+        ITrainRepository TrainRepository { get; }
+        ICarriageRepository CarriageRepository { get; }
+        IPlaceRepository PlaceRepository { get; }
+        IRouteStationRepository RouteStationRepository { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();
