@@ -44,22 +44,67 @@ namespace WebUI.Infrastructure
             CreateMap<RouteStationCreateViewModel, RouteStation>()
                 .ForMember(dest => dest.Station,
                     src => src.MapFrom(r => r.AllStations.First(rs => rs.Id == r.SelectedStation)))
-                .ForMember(dest => dest.ArriveTime, 
+                .ForMember(dest => dest.ArriveTime,
                     src => src.MapFrom(rs => rs.ArriveDate.Add(rs.ArriveTime.TimeOfDay)))
                 .ForMember(dest => dest.DepartureTime,
                     src => src.MapFrom(rs => rs.DepartureDate.Add(rs.DepartureTime.TimeOfDay)));
 
             CreateMap<StationViewModel, Station>();
 
+            CreateMap<Route, DetailsRouteViewModel>()
+                .ForMember(dest => dest.CarriagesCount, src => src.MapFrom(r => r.Train.Carriages.Count))
+                .ForMember(dest => dest.CommonCarriagesFreePlaces,
+                    src =>
+                        src.MapFrom(
+                            r =>
+                                r.Train.Carriages.Where(c => c.CarriageType == CarriageType.Lux)
+                                    .Sum(c => c.Places.Count(p => p.IsFree))))
+                .ForMember(dest => dest.CompartmentCarriagesFreePlaces,
+                    src =>
+                        src.MapFrom(
+                            r =>
+                                r.Train.Carriages.Where(c => c.CarriageType == CarriageType.Compartments)
+                                    .Sum(c => c.Places.Count(p => p.IsFree))))
+                .ForMember(dest => dest.ReservedSeatCarriagesFreePlaces,
+                    src =>
+                        src.MapFrom(
+                            r =>
+                                r.Train.Carriages.Where(c => c.CarriageType == CarriageType.ReservedSeat)
+                                    .Sum(c => c.Places.Count(p => p.IsFree))))
+                .ForMember(dest => dest.Name,
+                    src => src.MapFrom(r => r.Stations.First().Station.Name + "-" + r.Stations.Last().Station.Name))
+                .ForMember(dest => dest.TrainNumber, src => src.MapFrom(r => r.Train.Number))
+                .ForMember(dest => dest.RouteStations, src => src.MapFrom(r => r.Stations));
+
+            CreateMap<TicketViewModel, Ticket>();
         }
 
         private List<Place> GetCarriagePlaces(CarriageViewModel carriageVm)
         {
             var list = new List<Place>();
 
-            for (int i = 0; i < carriageVm.Places; i++)
+            if (GetCarriageTypeByString(carriageVm.SelectedType) == CarriageType.Compartments)
             {
-                list.Add(new Place {IsFree = true, Number = i + 1});
+                for (int i = 0; i < 40; i++)
+                {
+                    list.Add(new Place { IsFree = true, Number = i + 1 });
+                }
+            }
+
+            if (GetCarriageTypeByString(carriageVm.SelectedType) == CarriageType.ReservedSeat)
+            {
+                for (int i = 0; i < 54; i++)
+                {
+                    list.Add(new Place { IsFree = true, Number = i + 1 });
+                }
+            }
+
+            if (GetCarriageTypeByString(carriageVm.SelectedType) == CarriageType.Lux)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    list.Add(new Place { IsFree = true, Number = i + 1 });
+                }
             }
 
             return list;

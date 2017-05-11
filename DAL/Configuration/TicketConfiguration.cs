@@ -33,7 +33,15 @@ namespace DAL
             Property(x => x.Price)
                 .IsRequired();
 
-            HasRequired(x => x.Train);
+            Property(x => x.TrainNumber)
+                .IsRequired();
+
+            Property(x => x.ArriveStationName)
+                .IsRequired();
+
+            Property(x => x.DepartureStationName)
+                .IsRequired();
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlTypes;
+using System.Linq;
 using DAL;
 using Domain.Entities;
 using Domain.Enumerations;
@@ -76,12 +77,15 @@ namespace DAL
             var routeStationsList = new List<RouteStation>();
             var routesList = new List<Route>();
 
-            for (int i = 0; i < 36; i++)
+            for (int i = 0; i < 40; i++)
             {
                 var place = new Place { IsFree = true, Number = i+1 };
                 places.Add(place);
             }
-       
+
+            places.ElementAt(4).IsFree = false;
+            places.ElementAt(5).IsFree = false;
+
             var carriage = new Carriage{ Number = 1, Places = places };
             carriage.CarriageType = CarriageType.Compartments;
             carriage.IsDeleted = false;

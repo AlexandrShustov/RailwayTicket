@@ -1,0 +1,38 @@
+﻿@model WebUI.Models.TicketViewModel
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("BuyTicket", "Ticket", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                @Html.HiddenFor(m => m.CarriageNumber, new { Id = "carriageNumberHiddenInput" })
+                @Html.HiddenFor(m => m.PlaceNumber, new { Id = "placeNumberHiddenInput" })
+                @Html.HiddenFor(m => m.TrainNumber)
+                @Html.HiddenFor(m => m.RouteId)
+                @Html.HiddenFor(m => m.TrainId)
+
+                <p>From:</p>@Html.DropDownListFor(m => m.DepartureStationName, Model.Stations, new { Class = "dropdown-list" })
+                <p>To:</p>@Html.DropDownListFor(m => m.ArriveStationName, Model.Stations, new { Class = "dropdown-list" })
+                
+                <h4>Carriages:</h4>
+                <div class="carriage-links-div text-center">
+                    @foreach (var carriage in Model.Carriages)
+                    {
+                        @Ajax.ActionLink(carriage.Number.ToString(), "CarriageScheme", new { carriageId = carriage.Id },
+                            new AjaxOptions { UpdateTargetId = "carriage-scheme-div" },
+                            new { Class = "carriage-number-select" })
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="carriage-scheme-div">
+        @Html.Partial("CarriagePlacesSchema", Model.Carriages.First())
+    </div>
+
+    <input class="center-block submit-ticket-from-button" type="submit" value="Buy"/>
+}

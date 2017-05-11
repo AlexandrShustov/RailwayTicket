@@ -1,0 +1,62 @@
+﻿@using Domain.Enumerations
+@model WebUI.Models.DetailsRouteViewModel
+
+@{
+    ViewBag.Title = "RouteDetails";
+}
+
+<div class="route-list details-div">
+    <h2>Details of route "@Model.Name"</h2>
+    <div class="route-info">
+        <table class="details-route-table">
+            <thead>
+            <tr class="details-row">
+                <td>
+                    Train number
+                </td>
+                <td>
+                    Route name
+                </td>
+                <td>
+                    Carriages
+                </td>
+                <td>
+                    Free places
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">@Model.TrainNumber </td>
+                <td class="text-center">@Model.Name</td>
+                <td class="text-center">@Model.CarriagesCount</td>
+                <td class="text-center">
+                    <p>Compartments: @Model.CompartmentCarriagesFreePlaces</p>
+                    <p>Common: @Model.CommonCarriagesFreePlaces</p>
+                    <p>Reserved seats: @Model.ReservedSeatCarriagesFreePlaces</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h4>Route stations: </h4>
+    @foreach (var station in Model.RouteStations)
+    {
+        <div class="detailed-station">
+            <p>Station name: @station.Station.Name</p>
+            <p>Departure time: @station.DepartureTime</p>
+            <p>Arrive time: @station.ArriveTime</p>
+        </div>
+    }
+    @Html.ValidationSummary()
+        <div class="row center-block">
+            <div id="ticket-form">
+                @Ajax.ActionLink("Buy ticket", "BuyTicket", "Ticket", new { routeId = Model.Id }, new AjaxOptions { UpdateTargetId = "ticket-form" }, new { Class = "buy-ticket-link center-block" })
+            </div>
+        </div> 
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/Scripts/OnFreePlaceClick.js")"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

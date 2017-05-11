@@ -6,11 +6,15 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
 
-        public virtual Train Train { get; set; }
+        public int TrainNumber { get; set; }
 
         public DateTime DepartureTime { get; set; }
 
         public DateTime ArriveTime { get; set; }
+
+        public string DepartureStationName { get; set; }
+
+        public string ArriveStationName { get; set; }
 
         public decimal Price { get; set; }
 

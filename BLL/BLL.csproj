@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -45,6 +48,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,9 +62,11 @@
     <Compile Include="Abstract\IRouteService.cs" />
     <Compile Include="Abstract\IRouteStationService.cs" />
     <Compile Include="Abstract\IStationService.cs" />
+    <Compile Include="Abstract\ITicketService.cs" />
     <Compile Include="Abstract\ITrainService.cs" />
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\CarriageService.cs" />
+    <Compile Include="Concrete\PdfTicketService.cs" />
     <Compile Include="Concrete\RoleService.cs" />
     <Compile Include="Concrete\RouteService.cs" />
     <Compile Include="Concrete\RouteStationService.cs" />

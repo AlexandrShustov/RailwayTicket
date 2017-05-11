@@ -7,7 +7,6 @@
         @Html.HiddenFor(m => m.TrainId)
         <p>Number: @Html.EditorFor(m => m.Number, new { Type = "number" })</p>
         <p>Type: @Html.DropDownListFor(m => m.SelectedType, Model.CarriageTypes)</p>
-        <p>Places count: @Html.EditorFor(m => m.Places, new {Type = "number"})</p>
         <hr/>
 
         <input type="submit" value="Append carriage"/>

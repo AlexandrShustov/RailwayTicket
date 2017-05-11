@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "DownloadPage";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="route-list download-container">
+            <h2>Download ticket</h2>
+            <hr />
+
+            <p class="download-message">Click this link to download your ticket. After, just print it. Have a good trip!</p>
+            
+            <div class="link-container">
+                @Html.ActionLink("DOWNLOAD", "TicketFileDownload", new { filePath = @"X:\Ticket.pdf" }, new { Class = "download-link" })
+            </div>
+        </div>
+    </div>
+</div>

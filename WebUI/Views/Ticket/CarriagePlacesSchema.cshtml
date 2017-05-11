@@ -1,0 +1,98 @@
+﻿@using Domain.Enumerations
+@model Domain.Entities.Carriage
+
+@{
+    Layout = null;
+}
+
+<div>
+@switch (Model.CarriageType)
+{
+    case CarriageType.Compartments:
+        <div class="carriage-scheme">
+            @for (int i = 1; i < Model.Places.Count; i++)
+            {
+                <div class="compartments">
+                    @for (int j = i; j < i + 4; j++)
+                    {
+                        if (Model.Places.ElementAt(j - 1).IsFree)
+                        {
+                            <div name="uncolored" id="@Model.Number @j" onclick="onFreePlaceClick(this)" class="carriage-place-free">@j</div>
+                        }
+                        else
+                        {
+                            <div class="carriage-place-reserved">@j</div>
+                        }
+                    }
+                    @{
+                        i += 3;
+                    }
+                </div>
+            }
+        </div>
+        break;
+
+     case CarriageType.ReservedSeat:
+        <div class="carriage-reserved-scheme">
+            @for (int i = 1; i < Model.Places.Count; i++)
+            {
+                if (i < 35)
+                {
+                    <div class="compartments">
+                        @for (int j = i; j < i + 4; j++)
+                        {
+                            if (Model.Places.ElementAt(j - 1).IsFree)
+                            {
+                                <div name="uncolored" id="@Model.Number @j" onclick="onFreePlaceClick(this)" class="carriage-place-free">@j</div>
+                            }
+                            else
+                            {
+                                <div class="carriage-place-reserved">@j</div>
+                            }
+                        }
+                        @{ i += 3; }
+                    </div>
+                }
+                else
+                {
+                    <div class="reserved-seats">
+                        @for (int j = i; j < i + 2; j++)
+                        {
+                            if (Model.Places.ElementAt(j - 1).IsFree)
+                            {
+                                <div name="uncolored" id="@Model.Number @j" onclick="onFreePlaceClick(this)" class="carriage-place-free">@j</div>
+                            }
+                            else
+                            {
+                                <div class="carriage-place-reserved">@j</div>
+                            }
+                        }
+                        @{ i += 1; }
+                    </div>
+                }
+            }
+        </div>
+        break;
+       case CarriageType.Lux:
+        <div class="carriage-scheme">
+            @for (int i = 1; i < Model.Places.Count; i++)
+            {
+                <div class="lux">
+                    @for (int j = i; j < i + 2; j++)
+                        {
+                            if (Model.Places.ElementAt(j - 1).IsFree)
+                            {
+                            <div name="uncolored" id="@Model.Number @j" onclick="onFreePlaceClick(this)" class="carriage-place-free">@j</div>
+                        }
+                        else
+                        {
+                            <div class="carriage-place-reserved">@j</div>
+                        }
+                    }
+                    @{ i += 1; }
+                </div>
+            }
+        </div>
+        break;
+}
+</div>

@@ -78,6 +78,17 @@ namespace BLL.Concrete
 
             route.Stations = route.Stations.Where(s => !s.IsDeleted).ToList();
 
+
+            if (route.Train != null)
+            {
+                if (route.Train.IsDeleted)
+                {
+                    route.IsDeleted = true;
+                }
+
+                route.Train.Carriages = route.Train.Carriages.Where(c => !c.IsDeleted).ToList();
+            }
+
             Guard.ArgumentNotNull(route, nameof(route) + " should not be null.");
 
             return route;

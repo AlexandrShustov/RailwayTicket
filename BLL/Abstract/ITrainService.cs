@@ -15,5 +15,7 @@ namespace BLL.Abstract
         Task UpdateTrain(Train id);
 
         Train CreateTrain();
+
+        Task TakePlace(int trainId, int carriageNumber, int placeNumber);
     }
 }

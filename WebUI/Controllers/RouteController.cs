@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using BLL.Abstract;
 using Domain.Entities;
+using Domain.Enumerations;
 using Microsoft.Owin.Security;
 using WebUI.Models;
 
@@ -31,7 +32,7 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> DirectionList()
+        public async Task<ActionResult> RouteList()
         {
             ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
 
@@ -147,11 +148,13 @@ namespace WebUI.Controllers
             return RedirectToAction("ManageRoutes");
         }
 
+        [Authorize(Roles = "moder")]
         public ActionResult CreateStation()
         {
             return View();
         }
 
+        [Authorize(Roles = "moder")]
         public async Task<ActionResult> AddRouteStation(RouteStationCreateViewModel vm)
         {
             vm.AllStations = await _stationService.GetAll();
@@ -168,11 +171,21 @@ namespace WebUI.Controllers
             return RedirectToAction("EditRoute", new { routeId = vm.RouteId });
         }
 
+        [Authorize(Roles = "moder")]
         public ActionResult RemoveRouteStation(int routeId, int stationId)
         {
             _routeService.RemoveStationFromRoute(routeId, stationId);
 
             return RedirectToAction("EditRoute", new { routeId = routeId});
+        }
+
+        public async Task<ActionResult> RouteDetails(int routeId)
+        {
+            var route = await _routeService.GetById(routeId);
+
+            var detailRouteVm = _mapper.Map<DetailsRouteViewModel>(route);
+
+            return View(detailRouteVm);
         }
     }
 }

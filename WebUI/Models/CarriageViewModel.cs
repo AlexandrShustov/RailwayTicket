@@ -12,7 +12,7 @@ namespace WebUI.Models
         {
             var items = new List<string>();
 
-            items.Add(CarriageType.Common.ToString());
+            items.Add(CarriageType.Lux.ToString());
             items.Add(CarriageType.Compartments.ToString());
             items.Add(CarriageType.ReservedSeat.ToString());
 
@@ -23,8 +23,6 @@ namespace WebUI.Models
         public int Id { get; set; }
 
         [Required]
-        [DataType("int", ErrorMessage = "Please, input an integer.")]
-        [Range(1, Int32.MaxValue, ErrorMessage = "Please, input integer in correct range.")]
         public int Places { get; set; }
 
         [Required]

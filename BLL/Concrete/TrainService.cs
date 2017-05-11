@@ -67,5 +67,19 @@ namespace BLL.Concrete
 
             return _unitOfWork.TrainRepository.GetAll().Last();
         }
+
+        public async Task TakePlace(int trainId, int carriageNumber, int placeNumber)
+        {
+            var train = _unitOfWork.TrainRepository.FindById(trainId);
+
+            Guard.ArgumentNotNull(train, nameof(train) + " should not be null.");
+
+            train.Carriages.First(c => c.Number == carriageNumber)
+                 .Places.First(p => p.Number == placeNumber).IsFree = false;
+
+            _unitOfWork.TrainRepository.Update(train);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

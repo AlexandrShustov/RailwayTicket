@@ -4,6 +4,6 @@
     {
         Compartments,
         ReservedSeat,
-        Common
+        Lux
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WebUI.Models.RouteViewModel>
 @{
-    ViewBag.Title = "DirectionList";
+    ViewBag.Title = "RouteList";
 }
 
 <div class="row">
@@ -35,7 +35,7 @@
                         <p>@route.FreePlacesCount</p>
                     </td>
                     <td>
-                        <a href="#">Buy</a>
+                        @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id })
                     </td>
                 </tr>
             }
