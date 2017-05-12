@@ -11,5 +11,7 @@ namespace BLL.Abstract
         Task CreateStation(Station station);
 
         Task DeleteStation(int stationId);
+
+        List<Station> FindByTerm(string term);
     }
 }

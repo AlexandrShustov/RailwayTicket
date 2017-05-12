@@ -145,5 +145,24 @@ namespace BLL.Concrete
 
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public Task<List<Route>> GetRoutesBetweenStations(string from, string to)
+        {
+            var routes =_unitOfWork.RouteRepository.GetAll();
+            var resultList = new List<Route>();
+
+            foreach (var route in routes)
+            {
+                var stations = route.Stations.Select(s => s.Station.Name).ToList();
+
+                if (stations.Contains(from) && stations.Contains(to) &&
+                    stations.IndexOf(from) < stations.IndexOf(to))
+                {
+                    resultList.Add(route);
+                }
+            }
+
+            return Task.FromResult(resultList);
+        }
     }
 }

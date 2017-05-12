@@ -1,39 +1,51 @@
-﻿using System.IO;
+﻿using System;
+using System.Drawing;
+using System.IO;
 using BLL.Abstract;
 using Domain.Entities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Font = iTextSharp.text.Font;
+using Rectangle = iTextSharp.text.Rectangle;
 
 namespace BLL.Concrete
 {
     public class PdfTicketService : ITicketService
     {
-        public void GenerateTicket(Ticket ticket)
+        public async void GenerateTicket(Ticket ticket)
         {
-            FileStream fs = new FileStream(@"X:\Ticket.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
-            Rectangle documentSize = new Rectangle(PageSize.A5);
+            FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/Ticket.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            Rectangle documentSize = new Rectangle(PageSize.A4);
             Document doc = new Document(documentSize, 36, 72, 108, 180);
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
             doc.Open();
 
-            documentSize.BackgroundColor = new BaseColor(System.Drawing.Color.WhiteSmoke);
+            PdfPTable table = new PdfPTable(4);
+            table.LockedWidth = false;
+            table.WidthPercentage = 90;
+            PdfPCell cell = new PdfPCell(new Phrase("TRAIN TICKET"));
+            cell.Colspan = 4;
+            cell.HorizontalAlignment = 1;
+            table.AddCell(cell);
+            table.AddCell("Passanger name: ");
+            table.AddCell(ticket.PassangerName);
+            table.AddCell("Train: ");
+            table.AddCell(ticket.TrainNumber.ToString());
+            table.AddCell("Departure: ");
+            table.AddCell(ticket.DepartureStationName);
+            table.AddCell("Carriage: ");
+            table.AddCell(ticket.CarriageNumber.ToString());
+            table.AddCell("Arrive: ");
+            table.AddCell(ticket.ArriveStationName);
+            table.AddCell("Place: ");
+            table.AddCell(ticket.PlaceNumber.ToString());
+            table.AddCell("Departure date/time: ");
+            table.AddCell(ticket.DepartureTime.ToString());
+            table.AddCell("Arrive date/time: ");
+            table.AddCell(ticket.DepartureTime.ToString());
 
-            Paragraph title = new Paragraph("Train Ticket");
-            title.Alignment = Element.ALIGN_CENTER;
-
-            Paragraph userName = new Paragraph("Name: " + ticket.PassangerName);
-            Paragraph train = new Paragraph("Train number: " + ticket.TrainNumber);
-            Paragraph departureDate = new Paragraph("Departure: " + ticket.DepartureTime + " From: " + ticket.DepartureStationName);
-            Paragraph arriveDate = new Paragraph("Arrive: " + ticket.ArriveTime + " To: " + ticket.ArriveStationName);
-            Paragraph carriageNumber = new Paragraph("Carriage number: " + ticket.CarriageNumber);
-            Paragraph placeNumber = new Paragraph("Place number: " + ticket.PlaceNumber);
-            doc.Add(userName);
-            doc.Add(train);
-            doc.Add(departureDate);
-            doc.Add(arriveDate);
-            doc.Add(carriageNumber);
-            doc.Add(placeNumber);
+            doc.Add(table);
 
             doc.CloseDocument();
         }

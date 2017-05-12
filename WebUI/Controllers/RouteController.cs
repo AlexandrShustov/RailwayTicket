@@ -32,6 +32,7 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> RouteList()
         {
             ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
@@ -59,32 +60,8 @@ namespace WebUI.Controllers
         {
             var routes = await _routeService.GetAll();
             var routesList = routes.ToList().Where(r => !r.IsDeleted);
-            var routeViewModels = new List<RouteViewModel>();
 
-            foreach (var route in routesList)
-            {
-                var vm = new RouteViewModel();
-                var arriveTime = route.Stations.Last().ArriveTime;
-                var departureTime = route.Stations.First().DepartureTime;
-
-                vm.Id = route.Id;
-                
-                if (arriveTime != null)
-                {
-                    vm.ArriveTime = arriveTime.Value;
-                }
-                
-                if (departureTime != null)
-                {
-                    vm.DepartureTime = departureTime.Value;
-                }
-
-                vm.FirstStationName = route.Stations.First().Station.Name;
-                vm.LastStationName = route.Stations.Last().Station.Name;
-                vm.FreePlacesCount = route.Train.Carriages.Sum(x => x.Places.Count(p => p.IsFree));
-
-                routeViewModels.Add(vm);
-            }
+            List<RouteViewModel> routeViewModels = _mapper.Map<List<RouteViewModel>>(routesList);
 
             return routeViewModels;
         }
@@ -100,13 +77,14 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Authorize(Roles = "moder")]
-        public async Task<ActionResult> EditRoute(int routeId)
+        public async Task<ActionResult> EditRoute(int routeId, string errors = "")
         {
             var route = await _routeService.GetById(routeId);
 
             var viewModel = _mapper.Map<RouteEditViewModel>(route);
             var trains = await _trainService.GetAll();
 
+            ViewBag.Errors = errors;
             viewModel.Trains = new SelectList(trains.ToList(), "Id", "Number");
 
             return View("EditRoute", viewModel);
@@ -160,10 +138,9 @@ namespace WebUI.Controllers
             vm.AllStations = await _stationService.GetAll();
             var routeStation = _mapper.Map<RouteStation>(vm);
 
-            if (routeStation.DepartureTime >= routeStation.ArriveTime)
+            if (routeStation.DepartureTime <= routeStation.ArriveTime)
             {
-                ViewBag.Errors = "Departure time must be less than arrive time.";
-                return RedirectToAction("EditRoute", new {routeId = vm.RouteId});
+                return RedirectToAction("EditRoute", new {routeId = vm.RouteId, errors = "Departure time must be greater than arrive time."});
             }
 
             await _routeStationService.AddStationToRoute(vm.RouteId, routeStation);
@@ -179,6 +156,8 @@ namespace WebUI.Controllers
             return RedirectToAction("EditRoute", new { routeId = routeId});
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> RouteDetails(int routeId)
         {
             var route = await _routeService.GetById(routeId);
@@ -186,6 +165,21 @@ namespace WebUI.Controllers
             var detailRouteVm = _mapper.Map<DetailsRouteViewModel>(route);
 
             return View(detailRouteVm);
+        }
+
+        public ActionResult AutocompleteRouteSearch(string term)
+        {
+            var models = _stationService.FindByTerm(term).Select(s => s.Name);
+
+            return Json(models, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> FindRoutes(SearchViewModel model)
+        {
+            var results = await _routeService.GetRoutesBetweenStations(model.StationFrom, model.StationTo);
+            var vm = _mapper.Map<List<RouteViewModel>>(results);
+
+            return View("SearchResults", vm);
         }
     }
 }

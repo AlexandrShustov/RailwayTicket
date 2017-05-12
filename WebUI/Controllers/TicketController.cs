@@ -24,8 +24,11 @@ namespace WebUI.Controllers
         private IMapper _mapper;
         private IUserService _userService;
         private ITicketService _ticketService;
+        private IMailSender _mailSender;
 
-        public TicketController(IRouteService routeService, ICarriageService carriageService, IMapper mapper, ITrainService trainService, UserManager<IdentityUser, Guid> userManager, IUserService userService, ITicketService ticketService)
+        private static readonly string _ticketFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Ticket.pdf";
+
+        public TicketController(IRouteService routeService, ICarriageService carriageService, IMapper mapper, ITrainService trainService, UserManager<IdentityUser, Guid> userManager, IUserService userService, ITicketService ticketService, IMailSender mailSender)
         {
             _routeService = routeService;
             _carriageService = carriageService;
@@ -34,6 +37,7 @@ namespace WebUI.Controllers
             _userManager = userManager;
             _userService = userService;
             _ticketService = ticketService;
+            _mailSender = mailSender;
         }
 
         public async Task<ActionResult> BuyTicket(int routeId)
@@ -63,11 +67,28 @@ namespace WebUI.Controllers
             if (ModelState.IsValid)
             {
                 var ticket = _mapper.Map<Ticket>(vm);
-
-                await _trainService.TakePlace(vm.TrainId, vm.CarriageNumber, vm.PlaceNumber);
+                var route = await _routeService.GetById(vm.RouteId);
                 var userName = AuthenticationManager.User.Identity.Name;
                 var user = await _userService.FindByEmailAsync(userName);
-                ticket.PassangerName =  user.FirstName + " " + user.LastName;
+
+                var departureTime = route.Stations.First(s => s.Station.Name == ticket.DepartureStationName).DepartureTime;
+
+                if (departureTime != null)
+                {
+                    ticket.DepartureTime = departureTime.Value;
+                }
+
+                var arriveTime = route.Stations.First(s => s.Station.Name == ticket.ArriveStationName).ArriveTime;
+
+                if (arriveTime != null)
+                {
+                    ticket.ArriveTime = arriveTime.Value;
+                }
+
+
+                await _trainService.TakePlace(vm.TrainId, vm.CarriageNumber, vm.PlaceNumber);
+
+                ticket.PassangerName = user.FirstName + " " + user.LastName;
 
                 _ticketService.GenerateTicket(ticket);
             }
@@ -76,9 +97,9 @@ namespace WebUI.Controllers
         }
 
         [Authorize]
-        public FileResult TicketFileDownload(string filePath)
+        public FileResult TicketFileDownload()
         {
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(_ticketFilePath);
             var response = new FileContentResult(fileBytes, "application/octet-stream");
             response.FileDownloadName = "ticket.pdf";
 
@@ -89,6 +110,12 @@ namespace WebUI.Controllers
         public ActionResult DownloadPage()
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult TicketFileSendMail()
+        {
+            _mailSender.SendEmail("///todo", null);
         }
     }
 }

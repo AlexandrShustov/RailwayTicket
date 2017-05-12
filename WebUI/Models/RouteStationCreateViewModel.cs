@@ -27,6 +27,7 @@ namespace WebUI.Models
         public DateTime ArriveTime { get; set; }
 
         [Required]
+        [Remote("IsValidDates", "Route", AdditionalFields = "ArriveDate", ErrorMessage = "Departure date must be greater than arrive date!")]
         public DateTime DepartureDate { get; set; }
 
         [Required]

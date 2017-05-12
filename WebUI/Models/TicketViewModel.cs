@@ -38,6 +38,12 @@ namespace WebUI.Models
         public string ArriveStationName { get; set; }
 
         [Required]
+        public DateTime DepartureTime { get; set; }
+
+        [Required]
+        public DateTime ArriveTime { get; set; }
+
+        [Required]
         [Range(1, 50)]
         public int CarriageNumber { get; set; }
 

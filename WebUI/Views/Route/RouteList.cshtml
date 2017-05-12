@@ -1,16 +1,20 @@
-﻿@model IEnumerable<WebUI.Models.RouteViewModel>
+﻿@using WebUI.Models
+@model IEnumerable<WebUI.Models.RouteViewModel>
 @{
     ViewBag.Title = "RouteList";
 }
 
 <div class="row">
     <div class="col-md-offset-1 col-md-10 route-list">
-        <h2>All existing routes by today</h2>
+        
+        
+        <span><h2>All available routes for today</h2></span>
         <table class="route-list-table">
             @if (ViewBag.IsModer)
             {
                 <a class="manage-routes-link" href="@Url.Action("ManageRoutes", "Route")">Manage Routes</a>
             }
+            @Html.Partial("SearchBar", new SearchViewModel())
             <thead>
             <tr class="route-list-row">
                 <th>Route</th>
@@ -35,7 +39,7 @@
                         <p>@route.FreePlacesCount</p>
                     </td>
                     <td>
-                        @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id })
+                        @Html.ActionLink("Show details", "RouteDetails", new {routeId = route.Id})
                     </td>
                 </tr>
             }

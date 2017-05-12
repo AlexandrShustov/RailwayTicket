@@ -41,6 +41,14 @@ namespace WebUI.Infrastructure
             CreateMap<Route, RouteEditViewModel>();
             CreateMap<RouteEditViewModel, Route>();
 
+            CreateMap<Route, RouteViewModel>()
+                .ForMember(dest => dest.ArriveTime, src => src.MapFrom(r => r.Stations.Last().ArriveTime.Value))
+                .ForMember(dest => dest.DepartureTime, src => src.MapFrom(r => r.Stations.First().DepartureTime.Value))
+                .ForMember(dest => dest.FirstStationName, src => src.MapFrom(r => r.Stations.First().Station.Name))
+                .ForMember(dest => dest.LastStationName, src => src.MapFrom(r => r.Stations.Last().Station.Name))
+                .ForMember(dest => dest.FreePlacesCount,
+                    src => src.MapFrom(r => r.Train.Carriages.Sum(t => t.Places.Count(p => p.IsFree))));
+
             CreateMap<RouteStationCreateViewModel, RouteStation>()
                 .ForMember(dest => dest.Station,
                     src => src.MapFrom(r => r.AllStations.First(rs => rs.Id == r.SelectedStation)))

@@ -10,11 +10,10 @@
     @Html.HiddenFor(m => m.RouteId)
     <p> Select station: </p>@Html.DropDownListFor(m => m.SelectedStation, Model.StationsSelectItems, new { Class = "form-control" })
 
-    <p>Select time of departure: </p>@Html.TextBoxFor(m => m.DepartureTime, new { type = "time", Class = "form-control datepicker" })
-    <span>Select date of departure: </span>@Html.TextBoxFor(m => m.DepartureDate, new { type = "date", Class = "form-control datepicker" })
-
     <p>Select time of arrive: </p>@Html.TextBoxFor(m => m.ArriveTime, new { type = "time", Class = "form-control datepicker" })
     <p>Select date of arrive: </p>@Html.TextBoxFor(m => m.ArriveDate, new { type = "date", Class = "form-control datepicker" })
+    <p>Select time of departure: </p>@Html.TextBoxFor(m => m.DepartureTime, new { type = "time", Class = "form-control datepicker" })
+    <span>Select date of departure: </span>@Html.TextBoxFor(m => m.DepartureDate, new { type = "date", Class = "form-control datepicker" })
 
     <div>
         <input type="submit" value="Add station" class="save-route-link"/>

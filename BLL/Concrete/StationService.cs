@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL.Abstract;
 using Domain.Entities;
@@ -38,6 +39,11 @@ namespace BLL.Concrete
 
             _unitOfWork.StationRepository.Update(station);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public List<Station> FindByTerm(string term)
+        {
+            return _unitOfWork.StationRepository.FindByTerm(term);
         }
     }
 }

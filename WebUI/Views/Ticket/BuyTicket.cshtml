@@ -15,6 +15,7 @@
                 @Html.HiddenFor(m => m.RouteId)
                 @Html.HiddenFor(m => m.TrainId)
 
+
                 <p>From:</p>@Html.DropDownListFor(m => m.DepartureStationName, Model.Stations, new { Class = "dropdown-list" })
                 <p>To:</p>@Html.DropDownListFor(m => m.ArriveStationName, Model.Stations, new { Class = "dropdown-list" })
                 

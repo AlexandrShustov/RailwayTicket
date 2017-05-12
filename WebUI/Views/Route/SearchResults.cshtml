@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebUI.Models.RouteViewModel>
+
+@{
+    ViewBag.Title = "SearchResults";
+}
+
+<div class="row">
+    <div class="col-md-offset-1 col-md-10 route-list">
+        <div>
+            <h2>Search results</h2>
+            <hr />
+            <table class="route-list-table">
+                <thead>
+                <tr class="route-list-row">
+                    <th>Route</th>
+                    <th>Departure/Arrival time</th>
+                    <th>Free places</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var route in Model)
+                {
+                    <tr class="route-list-row">
+                        <td>
+                            <span>@route.FirstStationName-</span>
+                            <span>@route.LastStationName</span>
+                        </td>
+                        <td>
+                            <p>@route.DepartureTime</p>
+                            <p>@route.ArriveTime</p>
+                        </td>
+                        <td>
+                            <p>@route.FreePlacesCount</p>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id })
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

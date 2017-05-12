@@ -23,5 +23,7 @@ namespace BLL.Abstract
         Task AddTrainToRoute(int trainId, int routeId);
 
         Task RemoveStationFromRoute(int routeId, int routeStationId);
+
+        Task<List<Route>> GetRoutesBetweenStations(string from, string to);
     }
 }

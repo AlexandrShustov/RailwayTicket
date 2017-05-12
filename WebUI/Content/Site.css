@@ -631,3 +631,28 @@ a.download-link {
 .link-container {
     margin-top: 3%;
 }
+
+.search-bar {
+    margin-top: 5%;
+    background-color: rgba(255, 255, 255, 0.14);
+    padding: 15px;
+    border-left: 1px solid black; 
+}
+
+input.search-button {
+    border: none;
+    background-color: transparent;
+    width: 150px;
+    margin-left: 2%;
+    border: 1px solid dimgray;
+}
+
+    input.search-button:hover {
+        background-color: rgba(255, 255, 255, 0.24);
+    }
+
+.searchbar-input {
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.24);
+    border: 1px solid dimgray;
+}

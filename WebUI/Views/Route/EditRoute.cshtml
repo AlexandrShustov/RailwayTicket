@@ -18,7 +18,7 @@
         }
 
         @Html.HiddenFor(m => m.Id)
-        <p>@ViewBag.Errors</p>
+        <p class ="text-danger">@ViewBag.Errors</p>
         @Html.ValidationSummary()
         <p>Select train:</p>@Html.DropDownListFor(m => m.SelectedTrainId, Model.Trains, new {Class = "form-control"})
 
