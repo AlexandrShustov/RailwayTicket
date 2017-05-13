@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using BLL.Abstract;
@@ -8,24 +9,25 @@ namespace BLL.Concrete
 {
     public class MailSender : IMailSender
     {
-        public async Task SendEmail(string targetMail, Ticket ticket)
+        public async Task SendEmail(string targetMail)
         {
-            MailAddress from = new MailAddress("oleksandr.shustov@nure.ua", "RAILWAYS PROJECT");
-            MailAddress to = new MailAddress("shustov.sanya@gmail.com" /*targetMail*/);
-            MailMessage message = new MailMessage(from, to);
+            MailAddress from = new MailAddress("railwaystask@gmail.com", "RAILWAYS PROJECT");
+            MailAddress to = new MailAddress(targetMail);
 
-            message.Subject = "Your ticket";
-            message.Body = "<h2>Please, find your ticket in attach! </br> Best regards, RAILWAYS PROJECT</h2>";
-            message.Attachments.Add(new Attachment(@"X:\Ticket.pdf"));
-            message.IsBodyHtml = true;
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587)
+            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+            using (MailMessage message = new MailMessage(from, to))
             {
-                Credentials = new NetworkCredential("oleksandr.shustov@nure.ua", "hefestojasper12"),
-                EnableSsl = true
-            };
+                message.Subject = "Your ticket";
+                message.Body = "<h2>Please, find your ticket in attach! </br> Best regards, RAILWAYS PROJECT</h2>";
+                message.Attachments.Add(new Attachment(AppDomain.CurrentDomain.BaseDirectory + @"\Ticket.pdf"));
+                message.IsBodyHtml = true;
 
-            smtp.Send(message);
+
+                smtp.Credentials = new NetworkCredential("railwaystask@gmail.com", "railwaysfinal777");
+                smtp.EnableSsl = true;
+
+                smtp.Send(message);
+            }
         }
     }
 }

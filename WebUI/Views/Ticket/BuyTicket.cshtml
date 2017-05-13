@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+@Scripts.Render("~/bundles/unubtrusiveParseBody")
+
 @using (Html.BeginForm("BuyTicket", "Ticket", FormMethod.Post))
 {
     <div class="container">
@@ -19,6 +21,13 @@
                 <p>From:</p>@Html.DropDownListFor(m => m.DepartureStationName, Model.Stations, new { Class = "dropdown-list" })
                 <p>To:</p>@Html.DropDownListFor(m => m.ArriveStationName, Model.Stations, new { Class = "dropdown-list" })
                 
+                
+                <div class="tea-linen-container">
+                    @Html.ValidationSummary()
+                    <p>Tea count: @Html.TextBoxFor(m => m.TeaCount, new { Class = "tea-input"})</p>
+                    <p>Need linen @Html.CheckBoxFor(m => m.IsNeedLinen)</p>
+                </div>
+
                 <h4>Carriages:</h4>
                 <div class="carriage-links-div text-center">
                     @foreach (var carriage in Model.Carriages)

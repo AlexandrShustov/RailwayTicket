@@ -6,6 +6,10 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
 
+        public int RouteId { get; set; }
+
+        public Guid RelatedUserId { get; set; }
+
         public int TrainNumber { get; set; }
 
         public DateTime DepartureTime { get; set; }
@@ -23,5 +27,9 @@ namespace Domain.Entities
         public int CarriageNumber { get; set; }
 
         public int PlaceNumber { get; set; }
+
+        public int TeaCount { get; set; }
+
+        public bool IsNeedLinen { get; set; }
     }
 }

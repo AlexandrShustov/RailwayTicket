@@ -89,8 +89,20 @@ namespace WebUI.Controllers
                 await _trainService.TakePlace(vm.TrainId, vm.CarriageNumber, vm.PlaceNumber);
 
                 ticket.PassangerName = user.FirstName + " " + user.LastName;
+                ticket.RelatedUserId = user.UserId;
 
-                _ticketService.GenerateTicket(ticket);
+                ticket.TeaCount = vm.TeaCount;
+                ticket.IsNeedLinen = vm.IsNeedLinen;
+
+                var price = await _ticketService.CountTicketPrice(ticket.RouteId, 
+                                                                  ticket.DepartureStationName, 
+                                                                  ticket.ArriveStationName, 
+                                                                  ticket.TeaCount, 
+                                                                  ticket.IsNeedLinen);
+                ticket.Price = price;
+
+                await _ticketService.CreateTicket(ticket);
+                _ticketService.GeneratePdfTicket(ticket);
             }
 
             return RedirectToAction("DownloadPage");
@@ -113,9 +125,20 @@ namespace WebUI.Controllers
         }
 
         [Authorize]
-        public ActionResult TicketFileSendMail()
+        public ActionResult TicketFileSendMail(string userMail)
         {
-            _mailSender.SendEmail("///todo", null);
+            _mailSender.SendEmail(userMail);
+
+            return View("SendSuccess");
+        }
+
+        [Authorize]
+        public ActionResult SendTicketForm()
+        {
+            var userMail = AuthenticationManager.User.Identity.Name;
+            ViewBag.userMail = userMail;
+
+            return View();
         }
     }
 }

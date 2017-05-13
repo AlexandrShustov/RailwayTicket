@@ -22,7 +22,7 @@ namespace Infrastructure
             kernel.Bind<ITrainService>().To<TrainService>();
             kernel.Bind<ICarriageService>().To<CarriageService>();
             kernel.Bind<IRouteStationService>().To<RouteStationService>();
-            kernel.Bind<ITicketService>().To<PdfTicketService>();
+            kernel.Bind<ITicketService>().To<TicketService>();
             kernel.Bind<IMailSender>().To<MailSender>();
         }
     }

@@ -5,6 +5,8 @@
 }
 <h2>Add a new station</h2>
 
+@Scripts.Render("~/bundles/unubtrusiveParseBody")
+
 @using (Html.BeginForm("CreateStation", "Station", FormMethod.Post))
 {
     @Html.ValidationSummary()
@@ -13,8 +15,4 @@
     </div>
 
     <div><input type="submit" value="Submit" /></div>
-}
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 }

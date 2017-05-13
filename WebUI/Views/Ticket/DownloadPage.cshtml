@@ -11,12 +11,14 @@
 
             <p class="download-message">Click this link to download your ticket. After, just print it. Have a good trip!</p>
             
-            <div class="link-container">
-                @Html.ActionLink("DOWNLOAD", "TicketFileDownload", new { Class = "download-link" })
+            <div class="link-container center-block">
+                @Html.ActionLink("DOWNLOAD", "TicketFileDownload", null, new { Class = "download-link" })
             </div>
-            
-            <div class="link-container">
-                @Html.ActionLink("SEND TO MY EMAIL", "TicketFileSendMail", new { Class = "download-link" })
+            <div class="link-container center-block">
+                <p class="or-download">OR</p>
+                <div id="email-send-div">
+                    @Ajax.ActionLink("SEND TO MY EMAIL", "SendTicketForm", null, new AjaxOptions { UpdateTargetId = "email-send-div" }, new { Class = "download-link" })
+                </div>
             </div>
         </div>
     </div>

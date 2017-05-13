@@ -1,0 +1,16 @@
+﻿
+@{
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/unubtrusiveParseBody")
+
+@using (Html.BeginForm("TicketFileSendMail", "Ticket", FormMethod.Post))
+{
+    <p class="text-left">Send to: </p>
+    @Html.TextBox("userMail", null, new { Class = "mail-input", Value = ViewBag.userMail })
+
+    <div>
+        <input type="submit" value="SEND" class="send-mail-button"/>
+    </div>
+}

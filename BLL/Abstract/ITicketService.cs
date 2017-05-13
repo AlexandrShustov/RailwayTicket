@@ -1,9 +1,14 @@
-﻿using Domain.Entities;
+﻿using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace BLL.Abstract
 {
     public interface ITicketService
     {
-        void GenerateTicket(Ticket ticket);
+        void GeneratePdfTicket(Ticket ticket);
+
+        Task CreateTicket(Ticket ticket);
+
+        Task<decimal> CountTicketPrice(int routeId, string stationFrom, string stationTo, int teaCount, bool isNeedLinen);
     }
 }

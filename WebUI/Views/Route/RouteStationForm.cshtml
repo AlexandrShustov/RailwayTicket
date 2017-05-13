@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+@Scripts.Render("~/bundles/unubtrusiveParseBody")
+
 @using (Html.BeginForm("AddRouteStation", "Route", FormMethod.Post))
 {
     @Html.ValidationSummary()

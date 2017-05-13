@@ -1,18 +1,16 @@
 ﻿@model WebUI.Models.CarriageViewModel
 
-<div class="carriage-create">
-    @using (Html.BeginForm("CreateCarriage", "Train", FormMethod.Post))
+@Scripts.Render("~/bundles/unubtrusiveParseBody")
+
+<div id="carriage-create-id" class="carriage-create">
+    @using (Html.BeginForm("CreateCarriage", "Train"))
     {
-        @Html.ValidationSummary()
         @Html.HiddenFor(m => m.TrainId)
-        <p>Number: @Html.EditorFor(m => m.Number, new { Type = "number" })</p>
+        @Html.ValidationMessageFor(m => m.Number)
+        <p>Number: @Html.EditorFor(m => m.Number, new {Type = "number"})</p>
         <p>Type: @Html.DropDownListFor(m => m.SelectedType, Model.CarriageTypes)</p>
         <hr/>
 
         <input type="submit" value="Append carriage"/>
     }
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

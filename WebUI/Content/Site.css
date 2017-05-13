@@ -613,7 +613,6 @@ select.dropdown-list {
 a.download-link {
     padding: 15px;
     text-decoration: none;
-    margin-left: 42%;
     color: black;
     margin-top: 52%;
     border: 1px solid dimgray;
@@ -630,6 +629,8 @@ a.download-link {
 
 .link-container {
     margin-top: 3%;
+    width: 250px;
+    text-align: center;
 }
 
 .search-bar {
@@ -655,4 +656,41 @@ input.search-button {
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.24);
     border: 1px solid dimgray;
+}
+
+.or-download {
+    margin-bottom: 4%;
+}
+
+.mail-input {
+    border: 1px solid dimgray;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+input.send-mail-button {
+    margin-top: 2%;
+    border: 1px solid dimgray;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+    input.send-mail-button:hover {
+        background-color: rgba(255, 235, 255, 0.54);
+    }
+
+#email-send-div {
+    margin-top: 13%;
+}
+
+.tea-linen-container {
+    padding: 15px;
+    border: 1px solid dimgray;
+    margin-top: 2%;
+}
+
+input.tea-input {
+    border: 1px solid dimgray;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.14);
 }

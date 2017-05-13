@@ -68,7 +68,7 @@
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\CarriageService.cs" />
     <Compile Include="Concrete\MailSender.cs" />
-    <Compile Include="Concrete\PdfTicketService.cs" />
+    <Compile Include="Concrete\TicketService.cs" />
     <Compile Include="Concrete\RoleService.cs" />
     <Compile Include="Concrete\RouteService.cs" />
     <Compile Include="Concrete\RouteStationService.cs" />

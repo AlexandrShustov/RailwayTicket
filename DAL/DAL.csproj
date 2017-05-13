@@ -69,6 +69,7 @@
     <Compile Include="Repositories\RouteRepository.cs" />
     <Compile Include="Repositories\RouteStationRepository.cs" />
     <Compile Include="Repositories\StationRepository.cs" />
+    <Compile Include="Repositories\TicketRepository.cs" />
     <Compile Include="Repositories\TrainRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="UnitOfWork.cs" />

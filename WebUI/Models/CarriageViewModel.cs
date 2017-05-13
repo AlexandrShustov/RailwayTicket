@@ -22,20 +22,17 @@ namespace WebUI.Models
         [HiddenInput]
         public int Id { get; set; }
 
-        [Required]
         public int Places { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Field Number must be a number.")]
         [DataType("int", ErrorMessage = "Please, input an integer.")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Please, input integer in correct range.")]
         public int Number { get; set; }
 
-        [Required]
         public SelectList CarriageTypes { get; set; }
 
         public string SelectedType { get; set; }
 
-        [Required]
         public int TrainId { get; set; }
     }
 }

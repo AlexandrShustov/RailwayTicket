@@ -104,8 +104,10 @@ namespace DAL
             stationsList.Add(stationOne);
             stationsList.Add(stationTwo);
 
-            var routeStationStart = new RouteStation{ ArriveTime = new DateTime(1800), DepartureTime = new DateTime(2017, 5, 15), Station = stationOne};
-            var routeStationEnd = new RouteStation { ArriveTime = new DateTime(2017, 5, 16), DepartureTime = new DateTime(1800), Station = stationTwo };
+            var routeStationStart = new RouteStation{ ArriveTime = new DateTime(2017, 5, 15, 23, 23, 0),
+                                                      DepartureTime = new DateTime(2017, 5, 16, 1, 15, 0), Station = stationOne};
+            var routeStationEnd = new RouteStation { ArriveTime = new DateTime(2017, 5, 16, 2, 30, 0),
+                                                     DepartureTime = new DateTime(2017, 5, 16, 3, 0, 0), Station = stationTwo };
             routeStationsList.Add(routeStationStart);
             routeStationsList.Add(routeStationEnd);
 

@@ -58,6 +58,7 @@
     <Compile Include="Repositories\IRouteRepository.cs" />
     <Compile Include="Repositories\IRouteStationRepository.cs" />
     <Compile Include="Repositories\IStationRepository.cs" />
+    <Compile Include="Repositories\ITicketRepository.cs" />
     <Compile Include="Repositories\ITrainRepository.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />

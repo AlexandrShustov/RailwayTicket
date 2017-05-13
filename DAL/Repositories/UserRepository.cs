@@ -16,12 +16,12 @@ namespace DAL.Repositories
 
         public User FindByEmail(string email)
         {
-            return Set.FirstOrDefault(x => x.Email == email);
+            return Set.AsNoTracking().FirstOrDefault(x => x.Email == email);
         }
 
         public Task<User> FindByEmailAsync(string email)
         {
-            return Set.FirstOrDefaultAsync(x => x.Email == email);
+            return Set.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public Task<User> FindByEmailAsync(CancellationToken cancellationToken, string email)

@@ -54,5 +54,12 @@ namespace WebUI.Models
         public SelectList Stations { get; set; }
 
         public List<Carriage> Carriages { get; set; }
+
+        [Required(ErrorMessage = "Field Tea count is required.")]
+        [Range(0, 10, ErrorMessage = "Count of tea must be between 0 and 10.")]
+        public int TeaCount { get; set; }
+
+        [Required]
+        public bool IsNeedLinen { get; set; }
     }
 }

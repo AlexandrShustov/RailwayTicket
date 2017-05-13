@@ -13,6 +13,12 @@ namespace DAL
                 .Property(x => x.Id)
                 .IsRequired();
 
+            Property(x => x.RelatedUserId)
+                .IsRequired();
+
+            Property(x => x.RouteId)
+                .IsRequired();
+
             Property(x => x.ArriveTime)
                 .HasColumnType("datetime")
                 .IsRequired();
@@ -42,6 +48,11 @@ namespace DAL
             Property(x => x.DepartureStationName)
                 .IsRequired();
 
+            Property(x => x.TeaCount)
+                .IsRequired();
+
+            Property(x => x.IsNeedLinen)
+                .IsRequired();
         }
     }
 }

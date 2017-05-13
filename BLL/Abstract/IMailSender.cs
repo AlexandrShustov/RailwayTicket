@@ -5,6 +5,6 @@ namespace BLL.Abstract
 {
     public interface IMailSender
     {
-        Task SendEmail(string targetMail, Ticket ticket);
+        Task SendEmail(string targetMail);
     }
 }
