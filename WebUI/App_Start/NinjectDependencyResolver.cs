@@ -7,6 +7,7 @@ using Domain.Repositories;
 using Infrastructure;
 using Microsoft.AspNet.Identity;
 using Ninject;
+using NLog;
 using WebUI.Identity;
 using WebUI.Infrastructure;
 
@@ -41,6 +42,7 @@ namespace WebUI.App_Start
             kernel.Bind<IUserStore<IdentityUser, Guid>>().To<UserStore>();
             kernel.Bind<IRoleStore<IdentityRole, Guid>>().To<RoleStore>();
             kernel.Bind<IMapper>().ToMethod(c => Mapper.Instance);
+            kernel.Bind<Logger>().ToMethod(l => LogManager.GetCurrentClassLogger());
 
             binder.AddBindings(kernel);
         }

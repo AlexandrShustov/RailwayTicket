@@ -10,9 +10,11 @@ using Domain.Entities;
 using Domain.Enumerations;
 using Microsoft.Owin.Security;
 using WebUI.Models;
+using NLog;
 
 namespace WebUI.Controllers
 {
+    [HandleError(View = "Error")]
     public class RouteController : Controller
     {
         private IRouteService _routeService;
@@ -21,20 +23,25 @@ namespace WebUI.Controllers
         private IRouteStationService _routeStationService;
         private IMapper _mapper;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+        private Logger _logger;
 
-        public RouteController(IRouteService routeService, IStationService stationService, IMapper mapper, ITrainService trainService, IRouteStationService routeStationService)
+        public RouteController(IRouteService routeService, IStationService stationService, IMapper mapper, ITrainService trainService, IRouteStationService routeStationService, Logger logger)
         {
             _routeService = routeService;
             _stationService = stationService;
             _mapper = mapper;
             _trainService = trainService;
             _routeStationService = routeStationService;
+            _logger = logger;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> RouteList()
         {
+            _logger.Info(nameof(this.RouteList) + " " + AuthenticationManager.User.Identity.Name);
+
+
             ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
 
             return View(await GetAllRoutes());
@@ -44,16 +51,22 @@ namespace WebUI.Controllers
         [Authorize(Roles = "moder")]
         public async Task<ActionResult> ManageRoutes()
         {
+            _logger.Info(nameof(this.ManageRoutes) + " " + AuthenticationManager.User.Identity.Name);
+
             return View(await GetAllRoutes());
         }
 
         [HttpGet]
         [Authorize(Roles = "moder")]
-        public async Task<ActionResult> DeleteRoute(int RouteId)
+        public async Task<ActionResult> DeleteRoute(int routeId)
         {
-            await _routeService.DeleteRoute(RouteId);
+            _logger.Info(nameof(this.DeleteRoute) + " " + AuthenticationManager.User.Identity.Name + " routeId: " + routeId);
 
-            return View("ManagedRoutesList", await GetAllRoutes());
+            await _routeService.DeleteRoute(routeId);
+
+            ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
+
+            return View("RouteList", await GetAllRoutes());
         }
 
         public async Task<List<RouteViewModel>> GetAllRoutes()
@@ -63,6 +76,8 @@ namespace WebUI.Controllers
 
             List<RouteViewModel> routeViewModels = _mapper.Map<List<RouteViewModel>>(routesList);
 
+            _logger.Info(nameof(this.GetAllRoutes) + " " + AuthenticationManager.User.Identity.Name + " result:" + routes.Select(r => r.Id));
+
             return routeViewModels;
         }
 
@@ -71,6 +86,8 @@ namespace WebUI.Controllers
         public ActionResult CreateRoute()
         {
             var newRoute = _routeService.CreateRoute();
+
+            _logger.Info(nameof(this.CreateRoute) + " " + AuthenticationManager.User.Identity.Name);
 
             return RedirectToAction("EditRoute", new { routeId = newRoute.Id });
         }
@@ -86,6 +103,8 @@ namespace WebUI.Controllers
 
             ViewBag.Errors = errors;
             viewModel.Trains = new SelectList(trains.ToList(), "Id", "Number");
+
+            _logger.Info(nameof(this.EditRoute) + " " + AuthenticationManager.User.Identity.Name + " routeId: " + route.Id);
 
             return View("EditRoute", viewModel);
         }
@@ -113,6 +132,8 @@ namespace WebUI.Controllers
         [Authorize(Roles = "moder")]
         public async Task<ActionResult> AddRoute(RouteEditViewModel model)
         {
+            _logger.Info(nameof(this.AddRoute) + " " + AuthenticationManager.User.Identity.Name + " modelId: " + model.Id);
+
             if (model.Stations.Count <= 1)
             {
                 return RedirectToAction("ManageRoutes");
@@ -138,12 +159,28 @@ namespace WebUI.Controllers
             vm.AllStations = await _stationService.GetAll();
             var routeStation = _mapper.Map<RouteStation>(vm);
 
+            var creatingRoute = await _routeService.GetById(vm.RouteId);
+
             if (routeStation.DepartureTime <= routeStation.ArriveTime)
             {
                 return RedirectToAction("EditRoute", new {routeId = vm.RouteId, errors = "Departure time must be greater than arrive time."});
             }
 
+            if (creatingRoute.Stations.Any(s => s.Station.Name == routeStation.Station.Name))
+            {
+                return RedirectToAction("EditRoute", new { routeId = vm.RouteId, errors = "Station with the same name almost exists in route." });
+            }
+
+            if (creatingRoute.Stations.Count > 0 &&
+                creatingRoute.Stations.Last().DepartureTime >= routeStation.ArriveTime)
+            {
+                return RedirectToAction("EditRoute", new { routeId = vm.RouteId, errors = "Arrive time can`t be less or equal than departure time of last added station." });
+            }
+
+
             await _routeStationService.AddStationToRoute(vm.RouteId, routeStation);
+
+            _logger.Info(nameof(this.AddRouteStation) + " " + AuthenticationManager.User.Identity.Name);
 
             return RedirectToAction("EditRoute", new { routeId = vm.RouteId });
         }
@@ -153,13 +190,22 @@ namespace WebUI.Controllers
         {
             _routeService.RemoveStationFromRoute(routeId, stationId);
 
+            _logger.Info(nameof(this.RemoveRouteStation) + " " + AuthenticationManager.User.Identity.Name + " routeId: " + routeId + " stationId" + stationId);
+
             return RedirectToAction("EditRoute", new { routeId = routeId});
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> RouteDetails(int routeId)
+        public async Task<ActionResult> RouteDetails(int routeId, string errors = null)
         {
+            _logger.Info(nameof(this.RouteDetails) + " " + AuthenticationManager.User.Identity.Name + " routeId: " + routeId);
+
+            if (errors != null)
+            {
+                ViewBag.Errors = errors;
+            }
+
             var route = await _routeService.GetById(routeId);
 
             var detailRouteVm = _mapper.Map<DetailsRouteViewModel>(route);
@@ -176,10 +222,22 @@ namespace WebUI.Controllers
 
         public async Task<ActionResult> FindRoutes(SearchViewModel model)
         {
+            _logger.Info(nameof(this.FindRoutes) + " " + AuthenticationManager.User.Identity.Name + model.StationFrom + " " + model.StationTo);
+
+            ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
+            ViewBag.IsSearchResult = true;
+
+            if (model.StationFrom == model.StationTo)
+            {
+                ViewBag.Errors = "Stations are the same, please, select a different stations.";
+                return RedirectToAction("RouteList");
+            }
+
             var results = await _routeService.GetRoutesBetweenStations(model.StationFrom, model.StationTo);
             var vm = _mapper.Map<List<RouteViewModel>>(results);
 
-            return View("SearchResults", vm);
+
+            return View("RouteList", vm);
         }
     }
 }

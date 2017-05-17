@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace WebUI.Controllers
 {
+    [HandleError(View = "Error")]
     public class HomeController : Controller
     {
         [HttpGet]

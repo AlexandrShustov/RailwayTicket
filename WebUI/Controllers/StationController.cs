@@ -7,19 +7,23 @@ using System.Web.Mvc;
 using AutoMapper;
 using BLL.Abstract;
 using Domain.Entities;
+using NLog;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [HandleError(View = "Error")]
     public class StationController : Controller
     {
         private IStationService _stationService;
         private IMapper _mapper;
+        private Logger _logger;
 
-        public StationController(IStationService stationService, IMapper mapper)
+        public StationController(IStationService stationService, IMapper mapper, Logger logger)
         {
             _stationService = stationService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -29,8 +33,9 @@ namespace WebUI.Controllers
         }
 
         public ActionResult CreateNewStation(Station station)
-        { 
+        {
             var stationViewModel = new StationViewModel();
+
             return PartialView("CreateNewStation", stationViewModel);
         }
 
@@ -39,11 +44,8 @@ namespace WebUI.Controllers
         [ActionName("CreateStation")]
         public async Task<ActionResult> AddStation(StationViewModel station)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = "Field Name is required.";
-                return RedirectToAction("ManageStations");
-            }
+            var tmp = ModelState.IsValid;
+
             await _stationService.CreateStation(_mapper.Map<Station>(station));
 
             return RedirectToAction("ManageStations");
@@ -59,6 +61,8 @@ namespace WebUI.Controllers
         [Authorize(Roles = "moder")]
         public async Task<ActionResult> DeleteStation(int stationId)
         {
+            _logger.Info(nameof(DeleteStation) + " " + nameof(stationId) + " " + stationId);
+
             await _stationService.DeleteStation(stationId);
 
             var stations = await GetAllStations();

@@ -7,12 +7,15 @@ using BLL.Abstract;
 using Domain.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using NLog;
+using NLog.Fluent;
 using WebUI.Identity;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     [Authorize]
+    [HandleError(View = "Error")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser, Guid> _userManager;
@@ -20,13 +23,15 @@ namespace WebUI.Controllers
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
         private IMapper _mapper;
         private IUserService _userService;
+        private Logger _logger;
 
-        public AccountController(UserManager<IdentityUser, Guid> userManager, IUserService userService, IMapper mapper, RoleManager<IdentityRole, Guid> roleManager)
+        public AccountController(UserManager<IdentityUser, Guid> userManager, IUserService userService, IMapper mapper, RoleManager<IdentityRole, Guid> roleManager, Logger logger)
         {
             _userManager = userManager;
             _userService = userService;
             _mapper = mapper;
             _roleManager = roleManager;
+            _logger = logger;
         }
 
 
@@ -39,6 +44,8 @@ namespace WebUI.Controllers
 
         private async Task SignInAsync(IdentityUser user, bool isPersistent)
         {
+            _logger.Info(nameof(SignInAsync) + " " + user.UserName);
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
             var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
@@ -57,11 +64,15 @@ namespace WebUI.Controllers
 
                 if (user != null)
                 {
+                    _logger.Info(nameof(Login) + " " + user.UserName + " success");
+
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
                 else
                 {
+                    _logger.Info(nameof(Login) + " error");
+
                     ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
@@ -86,10 +97,11 @@ namespace WebUI.Controllers
             {
                 var user = new IdentityUser { UserName = model.Email };
                 var result = _userManager.Create(user, model.Password);
-                //await _userManager.AddToRoleAsync(user.Id, "user");
 
                 if (result.Succeeded)
                 {
+                    _logger.Info(nameof(Register) + " " + user.UserName + " success");
+
                     var entityUser = _mapper.Map<User>(model);
                     entityUser.PasswordHash = user.PasswordHash;
                     entityUser.SecurityStamp = user.SecurityStamp;
@@ -181,7 +193,10 @@ namespace WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            _logger.Info(nameof(LogOff) + " " + AuthenticationManager.User.Identity.Name);
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
             return RedirectToAction("HomePage", "Home");
         }
 
@@ -199,6 +214,7 @@ namespace WebUI.Controllers
             {
                 return Redirect(returnUrl);
             }
+
             return RedirectToAction("HomePage", "Home");
         }
 

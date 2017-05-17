@@ -1,15 +1,12 @@
 ﻿@model WebUI.Models.StationViewModel
 
-@{
-    Layout = null;
-}
 <h2>Add a new station</h2>
 
 @Scripts.Render("~/bundles/unubtrusiveParseBody")
 
 @using (Html.BeginForm("CreateStation", "Station", FormMethod.Post))
 {
-    @Html.ValidationSummary()
+    @Html.ValidationMessageFor(m => m.Name)
     <div>
         @Html.TextBoxFor(m => m.Name)
     </div>

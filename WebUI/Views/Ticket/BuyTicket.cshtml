@@ -6,7 +6,7 @@
 
 @Scripts.Render("~/bundles/unubtrusiveParseBody")
 
-@using (Html.BeginForm("BuyTicket", "Ticket", FormMethod.Post))
+@using (Html.BeginForm("BuyTicket", "Ticket", new { returnUrl = Request.RawUrl }, FormMethod.Post))
 {
     <div class="container">
         <div class="row">

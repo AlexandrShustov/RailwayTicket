@@ -9,6 +9,7 @@ namespace WebUI.Models
         public string StationFrom { get; set; }
 
         [Required(ErrorMessage = "Field To is required.")]
+        [Compare("StationFrom", ErrorMessage = "Stations are the same")]
         public string StationTo { get; set; }
     }
 }

@@ -4,45 +4,79 @@
     ViewBag.Title = "RouteList";
 }
 
-<div class="row">
+<div class="row" id="routes-table">
     <div class="col-md-offset-1 col-md-10 route-list">
         
+        @if (ViewBag.IsSearchResult != null && ViewBag.IsSearchResult)
+        {
+            <span>
+                <h2>Search results: </h2>
+            </span>
+        }
+        else
+        {
+            <span>
+                <h2>All available routes for today</h2>
+            </span>
+        }
+
         
-        <span><h2>All available routes for today</h2></span>
-        <table class="route-list-table">
             @if (ViewBag.IsModer)
             {
-                <a class="manage-routes-link" href="@Url.Action("ManageRoutes", "Route")">Manage Routes</a>
+                @Html.ActionLink("Manage routes", "ManageRoutes", "Route", new { Class = "manage-routes-link" })
+                @Html.ActionLink("Manage stations", "ManageStations", "Station", null, new { Class = "manage-routes-link" })
+                @Html.ActionLink("Manage trains", "ManageTrains", "Train", null, new { Class = "manage-routes-link" })
             }
+            
+            @if (!Model.Any())
+            {
+                <p>There is no routes.</p>
+            }
+            
+            @if (ViewBag.Errors != null)
+            {
+                <p>@ViewBag.Errors</p>
+            }
+            
+
             @Html.Partial("SearchBar", new SearchViewModel())
+
+        <table class="route-list-table">
             <thead>
-            <tr class="route-list-row">
-                <th>Route</th>
-                <th>Departure/Arrival time</th>
-                <th>Free places</th>
-                <th></th>
-            </tr>
+                <tr class="route-list-row">
+                    <th>Route</th>
+                    <th>Departure/Arrival time</th>
+                    <th>Free places</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var route in Model)
-            {
-                <tr class="route-list-row">
-                    <td>
-                        <span>@route.FirstStationName-</span>
-                        <span>@route.LastStationName</span>
-                    </td>
-                    <td>
-                        <p>@route.DepartureTime</p>
-                        <p>@route.ArriveTime</p>
-                    </td>
-                    <td>
-                        <p>@route.FreePlacesCount</p>
-                    </td>
-                    <td>
-                        @Html.ActionLink("Show details", "RouteDetails", new {routeId = route.Id})
-                    </td>
-                </tr>
-            }
+                @foreach (var route in Model)
+                {
+                    <tr class="route-list-row">
+                        <td>
+                            <span>@route.FirstStationName-</span>
+                            <span>@route.LastStationName</span>
+                        </td>
+                        <td>
+                            <p>@route.DepartureTime</p>
+                            <p>@route.ArriveTime</p>
+                        </td>
+                        <td>
+                            <p>@route.FreePlacesCount</p>
+                        </td>
+                        <td>
+                            @if (ViewBag.IsModer)
+                            {
+                                @Html.ActionLink("Delete", "DeleteRoute", new { RouteId = route.Id }, new { Class = "delete-route-link" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id })
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

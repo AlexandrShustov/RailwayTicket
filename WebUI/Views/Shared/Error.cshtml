@@ -1,9 +1,14 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
-
-@{
-    ViewBag.Title = "Error";
-}
-
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+﻿
+<div class="container">
+    <div class="row">
+        <div class="route-list">
+            <p class="explain-text">Something went wrong, but I already know what happened..posible this can explain to you something</p>
+            <img class="error-img center-block" src="~/Content/Images/error-img.png"/>
+            
+            <div class="center-block home-btn-container">
+                @Html.ActionLink("Bring me home", "HomePage", "Home", null, new { Class = "bring-me-home" })
+            </div>
+        </div>
+    </div>
+</div> 
 

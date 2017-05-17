@@ -7,6 +7,10 @@
 
 <div class="route-list details-div">
     <h2>Details of route "@Model.Name"</h2>
+    @if (ViewBag.Errors != null)
+    {
+        <p class="text-danger">@ViewBag.Errors</p>
+    }
     <div class="route-info">
         <table class="details-route-table">
             <thead>
