@@ -248,5 +248,14 @@ namespace WebUI.Controllers
 
             return View("RouteList", vm);
         }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
+
+            filterContext.Result = View("Error");
+        }
     }
 }

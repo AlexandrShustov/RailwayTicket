@@ -1,8 +1,10 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using DAL;
+using NLog;
 using WebUI.Infrastructure;
 
 namespace WebUI
@@ -17,6 +19,15 @@ namespace WebUI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_Error(Object sender, EventArgs e)
+        {
+            var raisedException = Server.GetLastError();
+
+            var logger = LogManager.GetCurrentClassLogger();
+
+            logger.Error(raisedException, raisedException.Message);
         }
     }
 }

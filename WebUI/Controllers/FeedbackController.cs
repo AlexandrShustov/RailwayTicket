@@ -8,6 +8,7 @@ using AutoMapper;
 using BLL.Abstract;
 using Domain.Entities;
 using Microsoft.Owin.Security;
+using NLog;
 using WebUI.Models;
 
 namespace WebUI.Controllers
@@ -18,17 +19,21 @@ namespace WebUI.Controllers
         private IMapper _mapper;
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
         private IUserService _userService;
+        private Logger _logger;
 
-        public FeedbackController(IFeedbackService feedbackService, IMapper mapper, IUserService userService)
+        public FeedbackController(IFeedbackService feedbackService, IMapper mapper, IUserService userService, Logger logger)
         {
             _feedbackService = feedbackService;
             _mapper = mapper;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
         public ActionResult GetAll()
         {
+            _logger.Info(nameof(GetAll) + " " + AuthenticationManager.User.Identity.Name);
+
             var feedbacks = _feedbackService.GetAll();
 
             var feedbacksModels = _mapper.Map<List<FeedbackViewModel>>(feedbacks);
@@ -51,6 +56,8 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<ActionResult> LeaveFeedback(FeedbackListViewModel model)
         {
+            _logger.Info(nameof(LeaveFeedback) + " " + AuthenticationManager.User.Identity.Name);
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = "Please, input a correct data.";
@@ -63,6 +70,15 @@ namespace WebUI.Controllers
             await _feedbackService.CreateFeedback(feedback);
 
             return RedirectToAction("About", "About");
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
+
+            filterContext.Result = View("Error");
         }
     }
 }

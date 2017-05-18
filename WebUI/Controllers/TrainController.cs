@@ -126,5 +126,14 @@ namespace WebUI.Controllers
 
             return View("EditTrain", trainViewModel);
         }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
+
+            filterContext.Result = View("Error");
+        }
     }
 }

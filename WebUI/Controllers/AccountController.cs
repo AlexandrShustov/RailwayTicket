@@ -218,5 +218,14 @@ namespace WebUI.Controllers
             return RedirectToAction("HomePage", "Home");
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
+
+            filterContext.Result = View("Error");
+        }
+
     }
 }
