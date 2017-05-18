@@ -39,13 +39,25 @@ namespace WebUI.Controllers
             return PartialView("CreateNewStation", stationViewModel);
         }
 
+        public async Task<ActionResult> IsValidStationModel(StationViewModel model)
+        {
+            var stations = await _stationService.GetAll();
+
+            if (stations.Where(s => !s.IsDeleted).Select(s => s.Name.ToLower()).Contains(model.Name.ToLower()))
+            {
+                return Json("The station with the same name is already exists.");
+            }
+
+            await AddStation(model);
+
+            return Json(new { RedirectUrl = Url.Action("ManageStations")});
+        }
+
         [HttpPost]
         [Authorize(Roles = "moder")]
         [ActionName("CreateStation")]
         public async Task<ActionResult> AddStation(StationViewModel station)
         {
-            var tmp = ModelState.IsValid;
-
             await _stationService.CreateStation(_mapper.Map<Station>(station));
 
             return RedirectToAction("ManageStations");

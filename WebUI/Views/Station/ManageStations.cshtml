@@ -14,15 +14,12 @@
         @Html.Partial("StationsList")
     </div>
 
-    <div class="add-station">
-        @Ajax.ActionLink("Add new station", "CreateNewStation", "Station", new AjaxOptions {UpdateTargetId = "create-station-div-id", InsertionMode = InsertionMode.InsertAfter}, new {Class = "add-station-link"})
-    </div>
-
-    <div id="create-station-div-id">
-
+    <div class="add-station" id="create-station-div-id">
+        @Ajax.ActionLink("Add new station", "CreateNewStation", "Station", new AjaxOptions {UpdateTargetId = "create-station-div-id"}, new {Class = "add-station-link"})
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/unubtrusiveParseBody")
 }

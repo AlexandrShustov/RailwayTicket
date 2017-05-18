@@ -261,16 +261,17 @@ p.station-list-p {
 a.add-station-link {
     text-decoration: none;
     font-family: segoe ui light;
-    color: white;
-    font-size: 12pt;
-    background-color: darkslateblue;
+    color: black;
+    font-size: 15pt;
+    background-color: rgba(255, 255, 255, 0.14);
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
+    border: 1px solid black;
 }
 
     a.add-station-link:hover {
-        background-color: blueviolet;
+        background-color: rgba(138, 43, 266, 0.34);
     }
 
 .add-station {
@@ -901,4 +902,25 @@ a.route-list-link {
 
     a.route-list-link:hover {
         background-color: rgba(255, 255, 255, 0.34);
+    }
+
+input.station-add-text-box {
+    background-color: rgba(255, 255, 255, 0.14);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    margin-bottom: 1%;
+    width: 100%;
+}
+
+input.add-station-submit {
+    background-color: rgba(255, 255, 255, 0.14);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    width: 100%;
+}
+
+    input.add-station-submit:hover {
+        background-color: rgba(255, 255, 255, 0.54);
     }

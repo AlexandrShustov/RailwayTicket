@@ -4,12 +4,22 @@
 
 @Scripts.Render("~/bundles/unubtrusiveParseBody")
 
-@using (Html.BeginForm("CreateStation", "Station", FormMethod.Post))
+@using (Ajax.BeginForm("IsValidStationModel", "Station", new AjaxOptions{ UpdateTargetId = "error-div", OnSuccess = "onsuccess"}, FormMethod.Post))
 {
+    <div id="error-div" class="text-danger">
+        
+    </div>
     @Html.ValidationMessageFor(m => m.Name)
     <div>
-        @Html.TextBoxFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { Class = "station-add-text-box"})
     </div>
 
-    <div><input type="submit" value="Submit" /></div>
+    <div><input type="submit" value="Add" class="add-station-submit" /></div>
 }
+
+<script type="text/javascript">
+    function onsuccess(data) {
+        if (data.RedirectUrl)
+            window.location.href = data.RedirectUrl;
+    }
+</script>
