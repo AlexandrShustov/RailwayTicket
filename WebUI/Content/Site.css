@@ -881,3 +881,24 @@ input.submit-role-input {
     input.submit-role-input:hover {
         background-color: rgba(155, 195, 255, 0.54);
     }
+
+.ticket-info {
+    background-color: rgba(255, 255, 255, 0.34);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    margin-bottom: 1%;
+}
+
+a.route-list-link {
+    background-color: rgba(255, 255, 255, 0.14);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    text-decoration: none;
+    color: black;
+}
+
+    a.route-list-link:hover {
+        background-color: rgba(255, 255, 255, 0.34);
+    }

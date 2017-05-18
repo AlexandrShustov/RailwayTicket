@@ -158,5 +158,13 @@ namespace WebUI.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTicketsByRoute(int routeId)
+        {
+            var tickets = await _ticketService.GetTicketsByRoute(routeId);
+
+            return View(tickets);
+        }
     }
 }

@@ -397,6 +397,7 @@
     <Content Include="Views\Feedback\FeedbackList.cshtml" />
     <Content Include="Views\Admin\AllUsers.cshtml" />
     <Content Include="Views\Admin\UserDetails.cshtml" />
+    <Content Include="Views\Ticket\GetTicketsByRoute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -97,6 +98,17 @@ namespace BLL.Concrete
             decimal price = ((int)time.Value.TotalHours * PriceForHour) + teaCount*TeaPrice + (isNeedLinen? LinenPrice: 0);
 
             return price;
+        }
+
+        public async Task<List<Ticket>> GetTicketsByRoute(int routeId)
+        {
+            var tickets = await _unitOfWork.TicketRepository.GetAllAsync();
+
+            Guard.ArgumentNotNull(tickets, nameof(tickets) + " should not be null.");
+
+            tickets = tickets.Where(t => t.RouteId == routeId).ToList();
+
+            return tickets;
         }
     }
 }

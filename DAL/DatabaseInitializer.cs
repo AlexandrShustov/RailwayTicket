@@ -83,9 +83,6 @@ namespace DAL
                 places.Add(place);
             }
 
-            places.ElementAt(4).IsFree = false;
-            places.ElementAt(5).IsFree = false;
-
             var carriage = new Carriage{ Number = 1, Places = places };
             carriage.CarriageType = CarriageType.Compartments;
             carriage.IsDeleted = false;

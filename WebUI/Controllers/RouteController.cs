@@ -226,6 +226,7 @@ namespace WebUI.Controllers
             _logger.Info(nameof(this.FindRoutes) + " " + AuthenticationManager.User.Identity.Name + model.StationFrom + " " + model.StationTo);
 
             ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
+            ViewBag.IsAdmin = AuthenticationManager.User.IsInRole("admin");
             ViewBag.IsSearchResult = true;
 
             if (model.StationFrom == model.StationTo)

@@ -1,0 +1,29 @@
+﻿@model List<Domain.Entities.Ticket>
+
+@{
+    ViewBag.Title = "GetTicketsByRoute";
+}
+
+<div class="route-list">
+    <h2>Tickets on route</h2>
+    <hr/>
+    
+    @if (!Model.Any())
+    {
+        <p>There is no tickets yet.</p>
+    }
+
+    @foreach (var ticket in Model)
+    {
+        <div class="ticket-info">
+            <p>Passanger: @ticket.PassangerName</p>
+            <p>Departure: @ticket.DepartureStationName @ticket.DepartureTime</p>
+            <p>Arrive: @ticket.ArriveStationName @ticket.ArriveTime</p>
+            <p>Train number: @ticket.TrainNumber</p>
+            <p>Carriage number: @ticket.CarriageNumber</p>
+            <p>Place number: @ticket.PlaceNumber</p>
+        </div>
+    }
+</div>
+
+

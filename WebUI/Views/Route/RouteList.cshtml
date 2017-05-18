@@ -73,11 +73,15 @@
                         <td>
                             @if (ViewBag.IsModer)
                             {
-                                @Html.ActionLink("Delete", "DeleteRoute", new { RouteId = route.Id }, new { Class = "delete-route-link" })
+                                @Html.ActionLink("Delete", "DeleteRoute", new { RouteId = route.Id }, new { Class = "route-list-link" })
+                            }
+                            else if (ViewBag.IsAdmin)
+                            {
+                                @Html.ActionLink("Show tickets", "GetTicketsByRoute", "Ticket", new {routeId = route.Id}, new { Class = "route-list-link" })
                             }
                             else
                             {
-                                @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id })
+                                @Html.ActionLink("Show details", "RouteDetails", new { routeId = route.Id }, new { Class = "route-list-link" })
                             }
                         </td>
                     </tr>
