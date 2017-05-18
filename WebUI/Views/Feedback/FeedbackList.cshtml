@@ -1,0 +1,41 @@
+﻿@model WebUI.Models.FeedbackListViewModel
+
+@{
+    Layout = null;
+}    
+
+@foreach (var feedback in Model.Feedbacks)
+{
+    <div class="feedback-container">
+        <p class="feedback-name">@feedback.UserName</p>
+        <p class="feedback-posting-date">@feedback.PostingDate</p>
+        <p class="feedback-text">@feedback.FeedbackText</p>
+    </div>
+}
+
+@if (ViewBag.IsAuthorized)
+{
+    <div class="center-block">
+        @using (Html.BeginForm("LeaveFeedback", "Feedback", FormMethod.Post))
+        {
+            <p class="enter-feedback-title">Enter your feedback: </p>
+            @Html.HiddenFor(p => p.NewFeedback.Id)
+            @Html.HiddenFor(p => p.NewFeedback.PostingDate)
+            @Html.HiddenFor(p => p.NewFeedback.UserName)
+
+
+            @Html.TextAreaFor(p => p.NewFeedback.FeedbackText, new {Class = "feedback-texbox"})
+
+            <div>
+                <input type="submit" value="Send feedback" class="submit-feedback-button"/>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>
+        <p class="enter-feedback-title">Please, authorize to leave a feedback.</p>
+    </div>
+}
+

@@ -43,6 +43,7 @@ namespace WebUI.Controllers
 
 
             ViewBag.IsModer = AuthenticationManager.User.IsInRole("moder");
+            ViewBag.IsAdmin = AuthenticationManager.User.IsInRole("admin");
 
             return View(await GetAllRoutes());
         }

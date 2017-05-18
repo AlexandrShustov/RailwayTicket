@@ -208,7 +208,10 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StationController.cs" />
@@ -225,6 +228,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CarriageViewModel.cs" />
     <Compile Include="Models\DetailsRouteViewModel.cs" />
+    <Compile Include="Models\FeedbackListViewModel.cs" />
+    <Compile Include="Models\FeedbackViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RouteEditViewModel.cs" />
     <Compile Include="Models\RouteStationCreateViewModel.cs" />
@@ -233,6 +238,7 @@
     <Compile Include="Models\StationViewModel.cs" />
     <Compile Include="Models\TicketViewModel.cs" />
     <Compile Include="Models\TrainViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -387,6 +393,10 @@
     <Content Include="Views\Route\SearchResults.cshtml" />
     <Content Include="Views\Ticket\SendTicketForm.cshtml" />
     <Content Include="Views\Ticket\SendSuccess.cshtml" />
+    <Content Include="Views\About\About.cshtml" />
+    <Content Include="Views\Feedback\FeedbackList.cshtml" />
+    <Content Include="Views\Admin\AllUsers.cshtml" />
+    <Content Include="Views\Admin\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

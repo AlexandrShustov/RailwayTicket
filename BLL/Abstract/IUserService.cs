@@ -15,6 +15,10 @@ namespace BLL.Abstract
 
         Task<User> FindByIdAsync(Guid userId);
 
+        User FindById(Guid id);
+
+        User FindByEmail(string email);
+
         Task<User> FindByEmailAsync(string email);
 
         Task UpdateAsync(User user);
@@ -26,5 +30,11 @@ namespace BLL.Abstract
         Task<IList<string>> GetRolesAsync(Guid userId);
 
         Task<bool> IsInRoleAsync(Guid userId, string roleName);
+
+        bool IsInRole(Guid userId, string roleName);
+
+        Task<List<User>> GetAll();
+
+        Task ChangeRoleTo(string role, Guid userId);
     }
 }

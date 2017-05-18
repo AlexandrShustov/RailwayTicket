@@ -15,6 +15,7 @@ namespace Domain.Repositories
         IPlaceRepository PlaceRepository { get; }
         IRouteStationRepository RouteStationRepository { get; }
         ITicketRepository TicketRepository { get; }
+        IFeedbackRepository FeedbackRepository { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

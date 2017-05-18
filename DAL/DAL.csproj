@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="Configuration\CarriageConfiguration.cs" />
+    <Compile Include="Configuration\FeedbackConfiguration.cs" />
     <Compile Include="Configuration\PlaceConfiguration.cs" />
     <Compile Include="Configuration\RouteConfiguration.cs" />
     <Compile Include="Configuration\RouteStationConfiguration.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Configuration\RoleConfiguration.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Repositories\CarriageRepository.cs" />
+    <Compile Include="Repositories\FeedbackRepository.cs" />
     <Compile Include="Repositories\PlaceRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />

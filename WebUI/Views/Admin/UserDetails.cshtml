@@ -1,0 +1,26 @@
+﻿@model WebUI.Models.UserViewModel
+
+@{
+    ViewBag.Title = "UserDetails";
+}
+
+<div class="route-list">
+    <h2>UserDetails</h2>
+    <hr />
+    <p>First name: @Model.User.FirstName</p>
+    <p>Last name: @Model.User.LastName</p>
+    <p>Email: @Model.User.Email</p>
+    <p>Phone number: @Model.User.PhoneNumber</p>
+    <p>Role: @Model.User.Roles.First().Name</p>
+    <hr />
+    @using (Html.BeginForm("UpdateUser", "Admin", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.User.UserId)
+        <p>Change role:</p>
+        @Html.DropDownListFor(m => m.SelectedRole, Model.Roles, new { Class = "user-role-dropdown" })
+
+        <input type="submit" value="Save" class="submit-role-input"/>
+    }
+</div>
+
+

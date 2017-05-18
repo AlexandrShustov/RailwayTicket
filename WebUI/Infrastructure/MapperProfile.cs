@@ -85,6 +85,13 @@ namespace WebUI.Infrastructure
                 .ForMember(dest => dest.RouteStations, src => src.MapFrom(r => r.Stations));
 
             CreateMap<TicketViewModel, Ticket>();
+
+            CreateMap<Feedback, FeedbackViewModel>();
+            CreateMap<FeedbackViewModel, Feedback>()
+                .ForMember(dest => dest.PostingDate, src => src.MapFrom(f => DateTime.UtcNow));
+
+            CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.User, src => src.MapFrom(u => u));
         }
 
         private List<Place> GetCarriagePlaces(CarriageViewModel carriageVm)

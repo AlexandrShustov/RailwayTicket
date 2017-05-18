@@ -24,6 +24,7 @@ namespace Infrastructure
             kernel.Bind<IRouteStationService>().To<RouteStationService>();
             kernel.Bind<ITicketService>().To<TicketService>();
             kernel.Bind<IMailSender>().To<MailSender>();
+            kernel.Bind<IFeedbackService>().To<FeedbackService>();
         }
     }
 }

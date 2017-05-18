@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ICarriageService.cs" />
+    <Compile Include="Abstract\IFeedbackService.cs" />
     <Compile Include="Abstract\IMailSender.cs" />
     <Compile Include="Abstract\IRoleService.cs" />
     <Compile Include="Abstract\IRouteService.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Abstract\ITrainService.cs" />
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\CarriageService.cs" />
+    <Compile Include="Concrete\FeedbackService.cs" />
     <Compile Include="Concrete\MailSender.cs" />
     <Compile Include="Concrete\TicketService.cs" />
     <Compile Include="Concrete\RoleService.cs" />

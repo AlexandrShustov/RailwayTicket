@@ -18,6 +18,7 @@ namespace DAL
         private IPlaceRepository _placeRepository;
         private IRouteStationRepository _routeStationRepository;
         private ITicketRepository _ticketRepository;
+        private IFeedbackRepository _feedbackRepository;
 
         public UnitOfWork(string nameOrConnectionString)
         {
@@ -41,6 +42,8 @@ namespace DAL
         public IRouteStationRepository RouteStationRepository => _routeStationRepository ?? (_routeStationRepository = new RouteStationRepository(_context));
 
         public ITicketRepository TicketRepository => _ticketRepository ?? (_ticketRepository = new TicketRepository(_context));
+
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository ?? (_feedbackRepository = new FeedbackRepository(_context));
 
         public int SaveChanges()
         {

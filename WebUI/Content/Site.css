@@ -775,3 +775,109 @@ a.bring-me-home {
     width: 200px;
     height: 50px;
 }
+
+.feedback-container {
+    background-color: rgba(255, 255, 255, 0.34);
+    padding: 15px;
+    margin-bottom: 1%;
+}
+
+.feedback-name {
+    margin-left: 2%;
+    font-family: segoe ui;
+    font-size: 25px;
+}
+
+.feedback-posting-date {
+    font-size: 12pt;
+    font-family: segoe ui light;
+    border-left: 1px solid black;
+    padding-left: 10px;
+}
+
+.feedback-text {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border: 1px solid dimgray;
+}
+
+textarea.feedback-texbox {
+    border: 1px solid black;
+    background-color: rgba(255, 255, 255, 0.34);
+    padding: 8px;
+    width: 100%;
+    font-family: segoe ui light;
+}
+
+input.submit-feedback-button {
+    border: 1px solid black;
+    font-family: segoe ui light;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.14);
+    margin-top: 1%;
+}
+
+    input.submit-feedback-button:hover {
+        background-color: rgba(255, 255, 255, 0.34);
+    }
+
+.enter-feedback-title {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border-left: 1px solid black;
+}
+
+a.contact-us-link {
+    margin-left: 1%;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border: 1px solid black;
+    text-decoration: none;
+    font-family: segoe ui light;
+    color: black;
+}
+
+    a.contact-us-link:hover {
+        background-color: rgba(255, 255, 255, 0.34);
+    }
+
+.users-container {
+    background-color: rgba(255, 255, 255, 0.14);
+    font-family: segoe ui light;
+    padding: 15px;
+    border-left: 1px solid black;
+    margin-bottom: 10px; 
+}
+
+a.user-details-link {
+    background-color: rgba(255, 255, 255, 0.14);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    text-decoration: none;
+    color: black;
+}
+
+    a.user-details-link:hover {
+        background-color: rgba(255, 255, 255, 0.34);
+    }
+
+select.user-role-dropdown {
+    background-color: rgba(255, 200, 200, 0.34);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    color: black;
+}
+
+input.submit-role-input {
+    background-color: rgba(155, 155, 255, 0.54);
+    font-family: segoe ui light;
+    padding: 8px;
+    border: 1px solid dimgray;
+    color: black;
+}
+
+    input.submit-role-input:hover {
+        background-color: rgba(155, 195, 255, 0.54);
+    }

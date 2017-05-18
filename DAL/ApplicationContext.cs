@@ -19,7 +19,8 @@ namespace DAL
         internal IDbSet<RouteStation> RouteStations { get; set; }
         internal IDbSet<Station> Stations           { get; set; }
         internal IDbSet<Ticket> Tickets             { get; set; }
-
+        internal IDbSet<Feedback> Feedbacks         { get; set; }
+             
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new UserConfiguration());
@@ -32,6 +33,7 @@ namespace DAL
             modelBuilder.Configurations.Add(new RouteStationConfiguration());
             modelBuilder.Configurations.Add(new StationConfiguration());
             modelBuilder.Configurations.Add(new TicketConfiguration());
+            modelBuilder.Configurations.Add(new FeedbackConfiguration());
         }
     }
 }

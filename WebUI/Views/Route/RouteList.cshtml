@@ -6,7 +6,7 @@
 
 <div class="row" id="routes-table">
     <div class="col-md-offset-1 col-md-10 route-list">
-        
+
         @if (ViewBag.IsSearchResult != null && ViewBag.IsSearchResult)
         {
             <span>
@@ -20,26 +20,31 @@
             </span>
         }
 
-        
-            @if (ViewBag.IsModer)
-            {
-                @Html.ActionLink("Manage routes", "ManageRoutes", "Route", new { Class = "manage-routes-link" })
-                @Html.ActionLink("Manage stations", "ManageStations", "Station", null, new { Class = "manage-routes-link" })
-                @Html.ActionLink("Manage trains", "ManageTrains", "Train", null, new { Class = "manage-routes-link" })
-            }
-            
-            @if (!Model.Any())
-            {
-                <p>There is no routes.</p>
-            }
-            
-            @if (ViewBag.Errors != null)
-            {
-                <p>@ViewBag.Errors</p>
-            }
-            
 
-            @Html.Partial("SearchBar", new SearchViewModel())
+        @if (ViewBag.IsModer)
+        {
+            @Html.ActionLink("Manage routes", "ManageRoutes", "Route", new { Class = "manage-routes-link" })
+            @Html.ActionLink("Manage stations", "ManageStations", "Station", null, new { Class = "manage-routes-link" })
+            @Html.ActionLink("Manage trains", "ManageTrains", "Train", null, new { Class = "manage-routes-link" })
+        }
+
+        @if (ViewBag.IsAdmin)
+        {
+            @Html.ActionLink("Manage users", "AllUsers", "Admin", null, new {Class = "manage-routes-link"})
+        }
+
+        @if (!Model.Any())
+        {
+            <p>There is no routes.</p>
+        }
+
+        @if (ViewBag.Errors != null)
+        {
+            <p>@ViewBag.Errors</p>
+        }
+
+
+        @Html.Partial("SearchBar", new SearchViewModel())
 
         <table class="route-list-table">
             <thead>
@@ -80,5 +85,5 @@
             </tbody>
         </table>
     </div>
-        <div class="col-md-1"></div>
-    </div>
+    <div class="col-md-1"></div>
+</div>

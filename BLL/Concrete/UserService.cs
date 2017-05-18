@@ -102,5 +102,48 @@ namespace BLL.Concrete
 
             return user.Roles.Select(x => x.Name).Contains(roleName);
         }
+
+        public User FindByEmail(string email)
+        {
+            return _unitOfWork.UserRepository.FindByEmail(email);
+        }
+
+        public User FindById(Guid id)
+        {
+            return _unitOfWork.UserRepository.FindById(id);
+        }
+
+        public Task<List<User>> GetAll()
+        {
+            return _unitOfWork.UserRepository.GetAllAsync();
+        }
+
+        public async Task ChangeRoleTo(string role, Guid userId)
+        {
+            var user = _unitOfWork.UserRepository.FindById(userId);
+
+            Guard.ArgumentNotNull(user, nameof(user) + " should not be null.");
+
+            user.Roles.Clear();
+
+            var newRole = _unitOfWork.RoleRepository.FindByName(role);
+
+            Guard.ArgumentNotNull(newRole, nameof(newRole) + " should not be null.");
+
+            user.Roles.Add(newRole);
+
+            _unitOfWork.UserRepository.Update(user);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public bool IsInRole(Guid userId, string roleName)
+        {
+            var user = FindById(userId);
+            Guard.ArgumentNotNull(user, "User should not be null.");
+            Guard.ArgumentNotWhiteSpaceOrNull(roleName);
+
+            return user.Roles.Select(x => x.Name).Contains(roleName);
+        }
     }
 }

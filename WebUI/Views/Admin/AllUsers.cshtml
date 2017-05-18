@@ -1,0 +1,19 @@
+﻿
+@model List<Domain.Entities.User>
+
+@{
+    ViewBag.Title = "AllUsers";
+}
+
+<div class="route-list">
+    <h2>All users</h2>
+    <hr/>
+    
+    @foreach (var user in Model)
+    {
+        <div class="users-container">
+            <p>User name: @user.UserName</p>
+            <p>@Html.ActionLink("Details", "UserDetails", "Admin", new { userId = user.UserId }, new { Class = "user-details-link" })</p>
+        </div>
+    }
+</div>

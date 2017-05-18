@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Carriage.cs" />
+    <Compile Include="Entities\Feedback.cs" />
     <Compile Include="Entities\Place.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Enumerations\CarriageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ICarriageRepository.cs" />
+    <Compile Include="Repositories\IFeedbackRepository.cs" />
     <Compile Include="Repositories\IPlaceRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IRoleRepository.cs" />
