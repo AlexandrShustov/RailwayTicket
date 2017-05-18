@@ -26,12 +26,15 @@ namespace WebUI.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Authorize(Roles = "moder")]
         public ActionResult CreateStation()
         {
             return View();
         }
 
+        [HttpPost]
+        [Authorize(Roles = "moder")]
         public ActionResult CreateNewStation(Station station)
         {
             var stationViewModel = new StationViewModel();
