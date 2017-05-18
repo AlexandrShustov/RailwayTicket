@@ -70,7 +70,9 @@ namespace DAL
 
 
 
-            var places = new List<Place>();
+            var places1 = new List<Place>();
+            var places2 = new List<Place>();
+            var places3 = new List<Place>();
             var carriages = new List<Carriage>();
             var trainsList = new List<Train>();
             var stationsList = new List<Station>();
@@ -80,16 +82,39 @@ namespace DAL
             for (int i = 0; i < 40; i++)
             {
                 var place = new Place { IsFree = true, Number = i+1 };
-                places.Add(place);
+                places1.Add(place);
             }
 
-            var carriage = new Carriage{ Number = 1, Places = places };
-            carriage.CarriageType = CarriageType.Compartments;
-            carriage.IsDeleted = false;
-            carriages.Add(carriage);
-            
+            for (int i = 0; i < 20; i++)
+            {
+                var place = new Place { IsFree = true, Number = i + 1 };
+                places2.Add(place);
+            }
+
+            for (int i = 0; i < 54; i++)
+            {
+                var place = new Place { IsFree = true, Number = i + 1 };
+                places3.Add(place);
+            }
+
+
+            var carriage1 = new Carriage{ Number = 1, Places = places1 };
+            carriage1.CarriageType = CarriageType.Compartments;
+
+            var carriage2 = new Carriage { Number = 2, Places = places2 };
+            carriage2.CarriageType = CarriageType.Lux;
+
+            var carriage3 = new Carriage { Number = 3, Places = places3 };
+            carriage3.CarriageType = CarriageType.ReservedSeat;
+
+            carriages.Add(carriage1);
+            carriages.Add(carriage2);
+            carriages.Add(carriage3);
+
             var train = new Train{ Carriages = carriages, Number = 444 };
+            var train2 = new Train {Number = 777, Carriages = new List<Carriage>()};
             trainsList.Add(train);
+            trainsList.Add(train2);
             
             var route = new Route();
             route.Train = train;
@@ -184,7 +209,9 @@ namespace DAL
             feedbackList.Add(feedback1);
             feedbackList.Add(feedback2);
 
-            context.Set<Place>().AddRange(places);
+            context.Set<Place>().AddRange(places1);
+            context.Set<Place>().AddRange(places2);
+            context.Set<Place>().AddRange(places3);
             context.Set<Carriage>().AddRange(carriages);
             context.Set<Train>().AddRange(trainsList);
             context.Set<Route>().AddRange(routesList);

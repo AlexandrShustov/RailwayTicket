@@ -190,7 +190,7 @@ namespace WebUI.Controllers
 
             await AddRouteStation(vm);
 
-            return Json(new { RedirectUrl = Url.Action("EditRoute", new { routeId = vm.RouteId }) }); ;
+            return Json(new { RedirectUrl = Url.Action("EditRoute", new { routeId = vm.RouteId }) });
         }
 
         [Authorize(Roles = "moder")]

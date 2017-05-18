@@ -65,26 +65,33 @@ namespace WebUI.Controllers
             return View("CarriagePlacesSchema", carriage);
         }
 
-        [ActionName("BuyTicket")]
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> MakeTicket(TicketViewModel vm, string returnUrl)
+        public async Task<ActionResult> IsValidTicketData(TicketViewModel vm, string returnUrl)
         {
             if (!ModelState.IsValid || vm.DepartureStationName == vm.ArriveStationName || vm.PlaceNumber == 0)
             {
-                return RedirectToAction("RouteDetails", "Route", new {routeId = vm.RouteId, errors = "Please, enter a correct data." });
+                return Json("Please, check your stations from-to or selected place, and try again.");
             }
 
-            var ticket = _mapper.Map<Ticket>(vm);
             var route = await _routeService.GetById(vm.RouteId);
-            var userName = AuthenticationManager.User.Identity.Name;
-            var user = await _userService.FindByEmailAsync(userName);
 
             if (route.Stations.ToList().IndexOf(route.Stations.First(s => s.Station.Name == vm.ArriveStationName)) <
                 route.Stations.ToList().IndexOf(route.Stations.First(s => s.Station.Name == vm.DepartureStationName)))
             {
-                return RedirectToAction("RouteDetails", "Route", new { routeId = vm.RouteId, errors = "Please, choose a correct stations." });
+                return Json("Please, choose stations in correct order.");
             }
+
+            await MakeTicket(vm, returnUrl);
+
+            return Json(new { RedirectUrl = Url.Action("DownloadPage")});
+        }
+
+        [Authorize]
+        public async Task MakeTicket(TicketViewModel vm, string returnUrl)
+        {
+            var ticket = _mapper.Map<Ticket>(vm);
+            var route = await _routeService.GetById(vm.RouteId);
+            var userName = AuthenticationManager.User.Identity.Name;
+            var user = await _userService.FindByEmailAsync(userName);
 
             var departureTime = route.Stations.First(s => s.Station.Name == ticket.DepartureStationName).DepartureTime;
 
@@ -120,8 +127,6 @@ namespace WebUI.Controllers
             _ticketService.GeneratePdfTicket(ticket);
 
             _logger.Info(nameof(MakeTicket) + " " + nameof(ticket.Id) + " " + ticket.Id);
-
-            return RedirectToAction("DownloadPage");
         }
 
         [Authorize]

@@ -6,7 +6,7 @@
 
 @Scripts.Render("~/bundles/unubtrusiveParseBody")
 
-@using (Html.BeginForm("BuyTicket", "Ticket", new { returnUrl = Request.RawUrl }, FormMethod.Post))
+@using (Ajax.BeginForm("IsValidTicketData", "Ticket", new { returnUrl = Request.RawUrl }, new AjaxOptions{ UpdateTargetId = "error-div", OnSuccess = "onsuccess"}, FormMethod.Post))
 {
     <div class="container">
         <div class="row">
@@ -44,5 +44,16 @@
         @Html.Partial("CarriagePlacesSchema", Model.Carriages.First())
     </div>
 
+    <div id="error-div" class="text-danger">
+
+    </div>
+
     <input class="center-block submit-ticket-from-button" type="submit" value="Buy"/>
 }
+
+<script type="text/javascript">
+    function onsuccess(data) {
+        if (data.RedirectUrl)
+            window.location.href = data.RedirectUrl;
+    }
+</script>
