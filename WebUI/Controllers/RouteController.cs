@@ -155,35 +155,42 @@ namespace WebUI.Controllers
         }
 
         [Authorize(Roles = "moder")]
-        public async Task<ActionResult> AddRouteStation(RouteStationCreateViewModel vm)
+        public async Task AddRouteStation(RouteStationCreateViewModel vm)
+        {
+            var routeStation = _mapper.Map<RouteStation>(vm);
+            await _routeStationService.AddStationToRoute(vm.RouteId, routeStation);
+
+            _logger.Info(nameof(this.AddRouteStation) + " " + AuthenticationManager.User.Identity.Name);
+
+            RedirectToAction("EditRoute", new {routeId = vm.RouteId});
+        }
+
+        public async Task<ActionResult> IsValidRouteStation(RouteStationCreateViewModel vm)
         {
             vm.AllStations = await _stationService.GetAll();
             var routeStation = _mapper.Map<RouteStation>(vm);
 
             var creatingRoute = await _routeService.GetById(vm.RouteId);
 
-            if (routeStation.DepartureTime <= routeStation.ArriveTime)
+            if (routeStation.DepartureTime <= routeStation.ArriveTime || routeStation.DepartureTime <= routeStation.ArriveTime)
             {
-                return RedirectToAction("EditRoute", new {routeId = vm.RouteId, errors = "Departure time must be greater than arrive time."});
+                return Json("Departure time must be greater than arrive time.");
             }
 
             if (creatingRoute.Stations.Any(s => s.Station.Name == routeStation.Station.Name))
             {
-                return RedirectToAction("EditRoute", new { routeId = vm.RouteId, errors = "Station with the same name almost exists in route." });
+                return Json("Station with the same name almost exists in route.");
             }
 
             if (creatingRoute.Stations.Count > 0 &&
                 creatingRoute.Stations.Last().DepartureTime >= routeStation.ArriveTime)
             {
-                return RedirectToAction("EditRoute", new { routeId = vm.RouteId, errors = "Arrive time can`t be less or equal than departure time of last added station." });
+                return Json("Arrive time can`t be less or equal than departure time of last added station.");
             }
 
+            await AddRouteStation(vm);
 
-            await _routeStationService.AddStationToRoute(vm.RouteId, routeStation);
-
-            _logger.Info(nameof(this.AddRouteStation) + " " + AuthenticationManager.User.Identity.Name);
-
-            return RedirectToAction("EditRoute", new { routeId = vm.RouteId });
+            return Json(new { RedirectUrl = Url.Action("EditRoute", new { routeId = vm.RouteId }) }); ;
         }
 
         [Authorize(Roles = "moder")]

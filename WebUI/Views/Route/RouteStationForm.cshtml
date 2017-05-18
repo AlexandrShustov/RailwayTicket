@@ -6,7 +6,9 @@
 
 @Scripts.Render("~/bundles/unubtrusiveParseBody")
 
-@using (Html.BeginForm("AddRouteStation", "Route", FormMethod.Post))
+
+<div id="error-div" class="text-danger"></div>
+@using (Ajax.BeginForm("IsValidRouteStation", "Route", new AjaxOptions{ UpdateTargetId = "error-div", OnSuccess = "onsuccess"}, FormMethod.Post))
 {
     @Html.ValidationSummary()
     @Html.HiddenFor(m => m.RouteId)
@@ -21,3 +23,10 @@
         <input type="submit" value="Add station" class="save-route-link"/>
     </div>
 }
+
+<script type="text/javascript">
+    function onsuccess(data) {
+        if (data.RedirectUrl)
+            window.location.href = data.RedirectUrl;
+    }
+</script>
